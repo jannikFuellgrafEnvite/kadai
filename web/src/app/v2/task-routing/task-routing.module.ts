@@ -21,9 +21,9 @@ import { CommonModule } from '@angular/common';
 
 import { TaskRoutingRoutingModule } from './task-routing-routing.module';
 import { RoutingUploadComponent } from './components/routing-upload/routing-upload.component';
-import { SharedModule } from '../shared/shared.module';
+
 
 @NgModule({
-    imports: [CommonModule, TaskRoutingRoutingModule, SharedModule, RoutingUploadComponent]
+    imports: [CommonModule, TaskRoutingRoutingModule, RoutingUploadComponent]
 })
 export class TaskRoutingModule {}
