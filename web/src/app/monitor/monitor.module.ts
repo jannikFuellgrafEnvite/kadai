@@ -21,7 +21,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { NgChartsModule } from 'ng2-charts';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { MapToIterable } from 'app/shared/pipes/map-to-iterable.pipe';
 import { SharedModule } from '../shared/shared.module';
@@ -63,7 +62,6 @@ const MODULES = [
   MonitorRoutingModule,
   FormsModule,
   AlertModule.forRoot(),
-  NgChartsModule,
   TabsModule.forRoot(),
   AngularSvgIconModule,
   SharedModule,
