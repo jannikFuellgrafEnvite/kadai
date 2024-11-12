@@ -29,7 +29,7 @@ import {
 } from '@angular/core';
 import { Task } from 'app/workplace/models/task';
 import { FormsValidatorService } from 'app/shared/services/forms-validator/forms-validator.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { Select } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { EngineConfigurationSelectors } from 'app/shared/store/engine-configuration-store/engine-configuration.selectors';
@@ -38,11 +38,23 @@ import { Classification } from '../../../shared/models/classification';
 import { TasksCustomisation } from '../../../shared/models/customisation';
 import { takeUntil } from 'rxjs/operators';
 import { AccessId } from '../../../shared/models/access-id';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FieldErrorDisplayComponent } from '../../../shared/components/field-error-display/field-error-display.component';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { TypeAheadComponent } from '../../../shared/components/type-ahead/type-ahead.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
-  selector: 'kadai-task-information',
-  templateUrl: './task-information.component.html',
-  styleUrls: ['./task-information.component.scss']
+    selector: 'kadai-task-information',
+    templateUrl: './task-information.component.html',
+    styleUrls: ['./task-information.component.scss'],
+    standalone: true,
+    imports: [NgIf, FormsModule, MatFormField, MatLabel, MatInput, FieldErrorDisplayComponent, MatSelect, NgFor, MatOption, TypeAheadComponent, MatTooltip, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, CdkTextareaAutosize, AsyncPipe]
 })
 export class TaskInformationComponent implements OnInit, OnChanges, OnDestroy {
   @Input()

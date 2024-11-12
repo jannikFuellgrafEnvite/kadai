@@ -18,12 +18,15 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { highlight } from 'app/shared/animations/validation.animation';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'kadai-shared-field-error-display',
-  templateUrl: './field-error-display.component.html',
-  animations: [highlight],
-  styleUrls: ['./field-error-display.component.scss']
+    selector: 'kadai-shared-field-error-display',
+    templateUrl: './field-error-display.component.html',
+    animations: [highlight],
+    styleUrls: ['./field-error-display.component.scss'],
+    standalone: true,
+    imports: [NgIf]
 })
 export class FieldErrorDisplayComponent implements OnInit {
   @Input()

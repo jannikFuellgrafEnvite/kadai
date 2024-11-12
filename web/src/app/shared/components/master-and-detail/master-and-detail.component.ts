@@ -17,13 +17,17 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationStart, RouterEvent } from '@angular/router';
+import { Router, NavigationStart, RouterEvent, RouterOutlet } from '@angular/router';
 import { MasterAndDetailService } from 'app/shared/services/master-and-detail/master-and-detail.service';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'kadai-shared-master-and-detail',
-  templateUrl: './master-and-detail.component.html',
-  styleUrls: ['./master-and-detail.component.scss']
+    selector: 'kadai-shared-master-and-detail',
+    templateUrl: './master-and-detail.component.html',
+    styleUrls: ['./master-and-detail.component.scss'],
+    standalone: true,
+    imports: [RouterOutlet, NgIf, MatIcon]
 })
 export class MasterAndDetailComponent implements OnInit {
   private classifications = 'classifications';

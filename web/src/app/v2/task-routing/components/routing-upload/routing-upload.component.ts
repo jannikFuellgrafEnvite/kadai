@@ -20,11 +20,14 @@ import { Component, OnInit } from '@angular/core';
 import { RoutingUploadService } from '@task-routing/services/routing-upload.service';
 import { NotificationService } from 'app/shared/services/notifications/notification.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'kadai-routing-upload',
-  templateUrl: './routing-upload.component.html',
-  styleUrls: ['./routing-upload.component.scss']
+    selector: 'kadai-routing-upload',
+    templateUrl: './routing-upload.component.html',
+    styleUrls: ['./routing-upload.component.scss'],
+    standalone: true,
+    imports: [NgIf]
 })
 export class RoutingUploadComponent implements OnInit {
   file: File | null = null;

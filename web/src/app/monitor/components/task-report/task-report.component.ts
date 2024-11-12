@@ -23,11 +23,16 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { RequestInProgressService } from 'app/shared/services/request-in-progress/request-in-progress.service';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { NgIf } from '@angular/common';
+import { ReportTableComponent } from '../report-table/report-table.component';
+import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
 
 @Component({
-  selector: 'kadai-monitor-task-report',
-  templateUrl: './task-report.component.html',
-  styleUrls: ['./task-report.component.scss']
+    selector: 'kadai-monitor-task-report',
+    templateUrl: './task-report.component.html',
+    styleUrls: ['./task-report.component.scss'],
+    standalone: true,
+    imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe]
 })
 export class TaskReportComponent implements OnInit {
   pieChartData: ChartData<'pie', number[], string> = { labels: [], datasets: [] };

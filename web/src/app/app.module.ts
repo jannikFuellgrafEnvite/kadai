@@ -124,10 +124,9 @@ const PROVIDERS = [
 ];
 
 @NgModule({
-  declarations: DECLARATIONS,
-  imports: MODULES,
-  providers: PROVIDERS,
-  bootstrap: [AppComponent]
+    imports: [...MODULES, ...DECLARATIONS],
+    providers: PROVIDERS,
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
 

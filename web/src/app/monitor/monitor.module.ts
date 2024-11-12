@@ -87,8 +87,7 @@ const DECLARATIONS = [
 ];
 
 @NgModule({
-  declarations: DECLARATIONS,
-  imports: [MODULES],
-  providers: [MonitorService, MapToIterable, provideHttpClient()]
+    imports: [MODULES, ...DECLARATIONS],
+    providers: [MonitorService, MapToIterable, provideHttpClient()]
 })
 export class MonitorModule {}

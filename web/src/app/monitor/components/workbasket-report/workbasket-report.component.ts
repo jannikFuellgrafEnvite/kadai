@@ -18,15 +18,22 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MetaInfoData } from '../../models/meta-info-data';
+import { NgIf } from '@angular/common';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { WorkbasketReportDueDateComponent } from '../workbasket-report-due-date/workbasket-report-due-date.component';
+import { WorkbasketReportPlannedDateComponent } from '../workbasket-report-planned-date/workbasket-report-planned-date.component';
+import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
 enum WorkbasketReports {
   DUE_DATE,
   PLANNED_DATE
 }
 
 @Component({
-  selector: 'kadai-monitor-workbasket-report',
-  templateUrl: './workbasket-report.component.html',
-  styleUrls: ['./workbasket-report.component.scss']
+    selector: 'kadai-monitor-workbasket-report',
+    templateUrl: './workbasket-report.component.html',
+    styleUrls: ['./workbasket-report.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatTabGroup, MatTab, WorkbasketReportDueDateComponent, WorkbasketReportPlannedDateComponent, GermanTimeFormatPipe]
 })
 export class WorkbasketReportComponent implements OnInit {
   metaInformation: MetaInfoData;

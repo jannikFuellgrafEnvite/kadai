@@ -28,16 +28,16 @@ import { FormsModule } from '@angular/forms';
 import { SettingsService } from './services/settings-service';
 
 @NgModule({
-  declarations: [SettingsComponent],
-  imports: [
-    CommonModule,
-    SettingsRoutingModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatButtonModule,
-    MatInputModule,
-    FormsModule
-  ],
-  providers: [SettingsService]
+    imports: [
+        CommonModule,
+        SettingsRoutingModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatButtonModule,
+        MatInputModule,
+        FormsModule,
+        SettingsComponent
+    ],
+    providers: [SettingsService]
 })
 export class SettingsModule {}

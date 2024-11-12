@@ -24,7 +24,6 @@ import { RoutingUploadComponent } from './components/routing-upload/routing-uplo
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [RoutingUploadComponent],
-  imports: [CommonModule, TaskRoutingRoutingModule, SharedModule]
+    imports: [CommonModule, TaskRoutingRoutingModule, SharedModule, RoutingUploadComponent]
 })
 export class TaskRoutingModule {}

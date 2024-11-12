@@ -19,7 +19,8 @@
 import { Directive, HostListener, Renderer2, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[kadaiResizableWidth]'
+    selector: '[kadaiResizableWidth]',
+    standalone: true
 })
 export class ResizableWidthDirective {
   private startX: number;

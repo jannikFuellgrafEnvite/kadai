@@ -27,9 +27,10 @@ import { takeUntil } from 'rxjs/operators';
 import { SettingMembers } from '../../../settings/components/Settings/expected-members';
 
 @Component({
-  selector: 'kadai-monitor-canvas',
-  templateUrl: './canvas.component.html',
-  styleUrls: ['./canvas.component.scss']
+    selector: 'kadai-monitor-canvas',
+    templateUrl: './canvas.component.html',
+    styleUrls: ['./canvas.component.scss'],
+    standalone: true
 })
 export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() row: ReportRow;

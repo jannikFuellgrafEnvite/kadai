@@ -27,15 +27,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HistoryRoutingModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatSortModule
-  ],
-  declarations: [TaskHistoryQueryComponent]
+    imports: [
+        CommonModule,
+        HistoryRoutingModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatSortModule,
+        TaskHistoryQueryComponent
+    ]
 })
 export class HistoryModule {}

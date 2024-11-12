@@ -18,11 +18,18 @@
 
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from 'app/workplace/models/task';
+import { NgIf } from '@angular/common';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
 
 @Component({
-  selector: 'kadai-task-status-details',
-  templateUrl: './task-status-details.component.html',
-  styleUrls: ['./task-status-details.component.scss']
+    selector: 'kadai-task-status-details',
+    templateUrl: './task-status-details.component.html',
+    styleUrls: ['./task-status-details.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatFormField, MatLabel, MatInput, FormsModule, GermanTimeFormatPipe]
 })
 export class TaskStatusDetailsComponent implements OnInit {
   @Input() task: Task;

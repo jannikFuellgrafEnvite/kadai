@@ -26,6 +26,12 @@ import { NotificationService } from '../../../shared/services/notifications/noti
 import { Observable, Subject } from 'rxjs';
 import { HotToastService } from '@ngneat/hot-toast';
 import { takeUntil } from 'rxjs/operators';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { NgFor, AsyncPipe } from '@angular/common';
 
 /**
  * Recommendation: Turn this component into presentational component - no logic, instead events are
@@ -33,9 +39,11 @@ import { takeUntil } from 'rxjs/operators';
  * or classification is stored in their respective container component.
  */
 @Component({
-  selector: 'kadai-administration-import-export',
-  templateUrl: './import-export.component.html',
-  styleUrls: ['./import-export.component.scss']
+    selector: 'kadai-administration-import-export',
+    templateUrl: './import-export.component.html',
+    styleUrls: ['./import-export.component.scss'],
+    standalone: true,
+    imports: [MatButton, MatTooltip, MatIcon, FormsModule, MatMenuTrigger, MatMenu, MatMenuItem, NgFor, AsyncPipe]
 })
 export class ImportExportComponent implements OnInit, OnDestroy {
   @Input() currentSelection: KadaiType;

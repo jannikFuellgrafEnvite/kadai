@@ -26,11 +26,21 @@ import { SettingsSelectors } from '../../../shared/store/settings-store/settings
 import { takeUntil } from 'rxjs/operators';
 import { validateSettings } from './settings.validators';
 import { RequestInProgressService } from '../../../shared/services/request-in-progress/request-in-progress.service';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgFor, NgIf } from '@angular/common';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
-  selector: 'kadai-administration-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+    selector: 'kadai-administration-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.scss'],
+    standalone: true,
+    imports: [MatButton, MatTooltip, MatIcon, NgFor, NgIf, MatFormField, MatLabel, MatInput, FormsModule, CdkTextareaAutosize]
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   settingTypes = SettingTypes;

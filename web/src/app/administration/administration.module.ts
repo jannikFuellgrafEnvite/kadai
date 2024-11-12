@@ -107,32 +107,32 @@ const DECLARATIONS = [
 ];
 
 @NgModule({
-  declarations: DECLARATIONS,
-  imports: [
-    MODULES,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatDividerModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatCheckboxModule,
-    MatRippleModule,
-    MatTableModule,
-    MatDialogModule,
-    MatExpansionModule
-  ],
-  providers: [
-    ClassificationDefinitionService,
-    WorkbasketDefinitionService,
-    ClassificationCategoriesService,
-    ImportExportService
-  ]
+    imports: [
+        MODULES,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatDividerModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatToolbarModule,
+        MatCheckboxModule,
+        MatRippleModule,
+        MatTableModule,
+        MatDialogModule,
+        MatExpansionModule,
+        ...DECLARATIONS
+    ],
+    providers: [
+        ClassificationDefinitionService,
+        WorkbasketDefinitionService,
+        ClassificationCategoriesService,
+        ImportExportService
+    ]
 })
 export class AdministrationModule {}

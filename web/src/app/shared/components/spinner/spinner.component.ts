@@ -18,13 +18,16 @@
 
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { NotificationService } from '../../services/notifications/notification.service';
+import { NgClass, NgIf } from '@angular/common';
 
 declare let $: any;
 
 @Component({
-  selector: 'kadai-shared-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss']
+    selector: 'kadai-shared-spinner',
+    templateUrl: './spinner.component.html',
+    styleUrls: ['./spinner.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf]
 })
 export class SpinnerComponent implements OnDestroy {
   showSpinner: boolean;

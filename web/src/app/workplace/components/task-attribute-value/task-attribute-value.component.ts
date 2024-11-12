@@ -18,11 +18,21 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { CustomAttribute } from 'app/workplace/models/task';
+import { NgIf, NgFor } from '@angular/common';
+import { MatDivider } from '@angular/material/divider';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'kadai-task-attribute-value',
-  templateUrl: './task-attribute-value.component.html',
-  styleUrls: ['./task-attribute-value.component.scss']
+    selector: 'kadai-task-attribute-value',
+    templateUrl: './task-attribute-value.component.html',
+    styleUrls: ['./task-attribute-value.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatDivider, NgFor, MatButton, MatTooltip, MatIcon, MatFormField, MatInput, FormsModule]
 })
 export class TaskAttributeValueComponent implements OnInit {
   @Input() callbackInfo = false;

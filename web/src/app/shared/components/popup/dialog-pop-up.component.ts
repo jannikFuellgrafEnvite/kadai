@@ -17,14 +17,19 @@
  */
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ObtainMessageService } from '../../services/obtain-message/obtain-message.service';
 import { messageTypes } from '../../services/obtain-message/message-types';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButton } from '@angular/material/button';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'kadai-shared-dialog-pop-up',
-  templateUrl: './dialog-pop-up.component.html',
-  styleUrls: ['./dialog-pop-up.component.scss']
+    selector: 'kadai-shared-dialog-pop-up',
+    templateUrl: './dialog-pop-up.component.html',
+    styleUrls: ['./dialog-pop-up.component.scss'],
+    standalone: true,
+    imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, NgIf]
 })
 export class DialogPopUpComponent implements OnInit {
   message: string;
