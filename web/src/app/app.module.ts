@@ -123,12 +123,7 @@ const PROVIDERS = [
   provideHttpClient(withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }))
 ];
 
-@NgModule({
-    imports: [...MODULES, ...DECLARATIONS],
-    providers: PROVIDERS,
-    bootstrap: [AppComponent]
-})
-export class AppModule {}
+
 
 export function startupServiceFactory(startupService: StartupService): () => Promise<any> {
   return (): Promise<any> => startupService.load();
