@@ -26,13 +26,14 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { NgIf } from '@angular/common';
 import { ReportTableComponent } from '../report-table/report-table.component';
 import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'kadai-monitor-task-report',
     templateUrl: './task-report.component.html',
     styleUrls: ['./task-report.component.scss'],
     standalone: true,
-    imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe]
+    imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe, BaseChartDirective]
 })
 export class TaskReportComponent implements OnInit {
   pieChartData: ChartData<'pie', number[], string> = { labels: [], datasets: [] };

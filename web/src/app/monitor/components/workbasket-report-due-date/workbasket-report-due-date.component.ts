@@ -25,13 +25,14 @@ import { RequestInProgressService } from '../../../shared/services/request-in-pr
 import { ChartConfiguration } from 'chart.js';
 import { NgIf } from '@angular/common';
 import { ReportTableComponent } from '../report-table/report-table.component';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'kadai-monitor-workbasket-report-due-date',
     templateUrl: './workbasket-report-due-date.component.html',
     styleUrls: ['./workbasket-report-due-date.component.scss'],
     standalone: true,
-    imports: [NgIf, ReportTableComponent]
+    imports: [NgIf, ReportTableComponent, BaseChartDirective]
 })
 export class WorkbasketReportDueDateComponent implements OnInit {
   @Output()

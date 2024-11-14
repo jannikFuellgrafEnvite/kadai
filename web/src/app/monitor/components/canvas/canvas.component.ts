@@ -50,7 +50,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  constructor() {
+  constructor() { 
     Chart.register(DoughnutController, ArcElement, Tooltip, Legend, Title);
   }
 
