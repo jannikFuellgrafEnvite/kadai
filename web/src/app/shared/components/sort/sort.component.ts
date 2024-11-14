@@ -26,11 +26,11 @@ import { NgIf, NgFor } from '@angular/common';
 import { MapValuesPipe } from '../../pipes/map-values.pipe';
 
 @Component({
-    selector: 'kadai-shared-sort',
-    templateUrl: './sort.component.html',
-    styleUrls: ['./sort.component.scss'],
-    standalone: true,
-    imports: [MatButton, MatTooltip, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, NgIf, NgFor, MapValuesPipe]
+  selector: 'kadai-shared-sort',
+  templateUrl: './sort.component.html',
+  styleUrls: ['./sort.component.scss'],
+  standalone: true,
+  imports: [MatButton, MatTooltip, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem, NgIf, NgFor, MapValuesPipe]
 })
 export class SortComponent<T> implements OnInit {
   @Input() sortingFields: Map<T, string>;

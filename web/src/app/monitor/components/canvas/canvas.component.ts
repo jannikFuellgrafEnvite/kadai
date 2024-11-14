@@ -28,11 +28,11 @@ import { SettingMembers } from '../../../settings/components/Settings/expected-m
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 @Component({
-    selector: 'kadai-monitor-canvas',
-    templateUrl: './canvas.component.html',
-    styleUrls: ['./canvas.component.scss'],
-    standalone: true,
-    providers: [provideCharts(withDefaultRegisterables())]
+  selector: 'kadai-monitor-canvas',
+  templateUrl: './canvas.component.html',
+  styleUrls: ['./canvas.component.scss'],
+  standalone: true,
+  providers: [provideCharts(withDefaultRegisterables())]
 })
 export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() row: ReportRow;
@@ -50,7 +50,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  constructor() { 
+  constructor() {
     Chart.register(DoughnutController, ArcElement, Tooltip, Legend, Title);
   }
 

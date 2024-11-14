@@ -40,11 +40,11 @@ import { MatIcon } from '@angular/material/icon';
 import { WorkbasketDistributionTargetsListComponent } from '../workbasket-distribution-targets-list/workbasket-distribution-targets-list.component';
 
 @Component({
-    selector: 'kadai-administration-workbasket-distribution-targets',
-    templateUrl: './workbasket-distribution-targets.component.html',
-    styleUrls: ['./workbasket-distribution-targets.component.scss'],
-    standalone: true,
-    imports: [MatToolbar, NgIf, MatButton, MatIcon, NgClass, WorkbasketDistributionTargetsListComponent]
+  selector: 'kadai-administration-workbasket-distribution-targets',
+  templateUrl: './workbasket-distribution-targets.component.html',
+  styleUrls: ['./workbasket-distribution-targets.component.scss'],
+  standalone: true,
+  imports: [MatToolbar, NgIf, MatButton, MatIcon, NgClass, WorkbasketDistributionTargetsListComponent]
 })
 export class WorkbasketDistributionTargetsComponent implements OnInit, OnDestroy {
   sideEnum = Side;

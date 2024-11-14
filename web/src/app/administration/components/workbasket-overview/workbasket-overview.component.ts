@@ -32,11 +32,11 @@ import { WorkbasketDetailsComponent } from '../workbasket-details/workbasket-det
 import { SvgIconComponent } from 'angular-svg-icon';
 
 @Component({
-    selector: 'kadai-administration-workbasket-overview',
-    templateUrl: './workbasket-overview.component.html',
-    styleUrls: ['./workbasket-overview.component.scss'],
-    standalone: true,
-    imports: [WorkbasketListComponent, NgIf, MatIcon, WorkbasketDetailsComponent, SvgIconComponent]
+  selector: 'kadai-administration-workbasket-overview',
+  templateUrl: './workbasket-overview.component.html',
+  styleUrls: ['./workbasket-overview.component.scss'],
+  standalone: true,
+  imports: [WorkbasketListComponent, NgIf, MatIcon, WorkbasketDetailsComponent, SvgIconComponent]
 })
 export class WorkbasketOverviewComponent implements OnInit {
   showDetail = false;

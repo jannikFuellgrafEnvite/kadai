@@ -22,11 +22,11 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-    selector: 'kadai-administration-icon-type',
-    templateUrl: './icon-type.component.html',
-    styleUrls: ['./icon-type.component.scss'],
-    standalone: true,
-    imports: [SvgIconComponent, MatTooltip]
+  selector: 'kadai-administration-icon-type',
+  templateUrl: './icon-type.component.html',
+  styleUrls: ['./icon-type.component.scss'],
+  standalone: true,
+  imports: [SvgIconComponent, MatTooltip]
 })
 export class IconTypeComponent implements OnInit, OnChanges {
   @Input()

@@ -176,26 +176,26 @@ export const httpClientInterceptor: HttpInterceptorFn = (request: HttpRequest<un
 };
 
 @NgModule({
-    imports: [
-        MODULES,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatMenuModule,
-        MatTooltipModule,
-        MatPaginatorModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatProgressSpinnerModule,
-        DECLARATIONS
-    ],
-    exports: [DECLARATIONS, GermanTimeFormatPipe],
-    providers: [
-        AccessIdsService,
-        ClassificationsService,
-        WorkbasketService,
-        ObtainMessageService,
-        provideHttpClient(withInterceptors([httpClientInterceptor]))
-    ]
+  imports: [
+    MODULES,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatMenuModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    DECLARATIONS
+  ],
+  exports: [DECLARATIONS, GermanTimeFormatPipe],
+  providers: [
+    AccessIdsService,
+    ClassificationsService,
+    WorkbasketService,
+    ObtainMessageService,
+    provideHttpClient(withInterceptors([httpClientInterceptor]))
+  ]
 })
 export class SharedModule {}

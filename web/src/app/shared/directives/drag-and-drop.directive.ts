@@ -19,8 +19,8 @@
 import { Directive, HostListener, Output, EventEmitter, HostBinding } from '@angular/core';
 
 @Directive({
-    selector: '[kadaiDragAndDrop]',
-    standalone: true
+  selector: '[kadaiDragAndDrop]',
+  standalone: true
 })
 export class DragAndDropDirective {
   @Output() onFileDropped = new EventEmitter<any>();

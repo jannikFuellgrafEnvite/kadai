@@ -28,11 +28,11 @@ import { ReportTableComponent } from '../report-table/report-table.component';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
-    selector: 'kadai-monitor-workbasket-report-planned-date',
-    templateUrl: './workbasket-report-planned-date.component.html',
-    styleUrls: ['./workbasket-report-planned-date.component.scss'],
-    standalone: true,
-    imports: [NgIf, ReportTableComponent, BaseChartDirective]
+  selector: 'kadai-monitor-workbasket-report-planned-date',
+  templateUrl: './workbasket-report-planned-date.component.html',
+  styleUrls: ['./workbasket-report-planned-date.component.scss'],
+  standalone: true,
+  imports: [NgIf, ReportTableComponent, BaseChartDirective]
 })
 export class WorkbasketReportPlannedDateComponent implements OnInit {
   @Output()

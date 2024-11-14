@@ -19,8 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'mapValues',
-    standalone: true
+  name: 'mapValues',
+  standalone: true
 })
 export class MapValuesPipe implements PipeTransform {
   transform<T, V>(value: Map<T, V>, args?: any[]): { key: T; value: V }[] {

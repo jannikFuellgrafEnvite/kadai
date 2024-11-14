@@ -19,7 +19,6 @@
 import { enableProdMode, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-
 import { environment } from 'environments/environment';
 import { WindowRefService } from 'app/shared/services/window/window.service';
 import { DomainService } from 'app/shared/services/domain/domain.service';
@@ -115,15 +114,10 @@ const MODULES = [
 ];
 const DECLARATIONS = [AppComponent, NavBarComponent, UserInformationComponent, NoAccessComponent, SidenavListComponent];
 
-
-
 if (environment.production) {
   enableProdMode();
 }
 
 bootstrapApplication(AppComponent, {
-    providers: [
-        importProvidersFrom(...MODULES, ...DECLARATIONS),
-        ...PROVIDERS
-    ]
+  providers: [importProvidersFrom(...MODULES, ...DECLARATIONS), ...PROVIDERS]
 });

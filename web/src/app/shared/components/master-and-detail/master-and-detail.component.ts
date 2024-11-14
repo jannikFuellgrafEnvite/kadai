@@ -23,11 +23,11 @@ import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'kadai-shared-master-and-detail',
-    templateUrl: './master-and-detail.component.html',
-    styleUrls: ['./master-and-detail.component.scss'],
-    standalone: true,
-    imports: [RouterOutlet, NgIf, MatIcon]
+  selector: 'kadai-shared-master-and-detail',
+  templateUrl: './master-and-detail.component.html',
+  styleUrls: ['./master-and-detail.component.scss'],
+  standalone: true,
+  imports: [RouterOutlet, NgIf, MatIcon]
 })
 export class MasterAndDetailComponent implements OnInit {
   private classifications = 'classifications';

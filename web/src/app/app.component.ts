@@ -37,7 +37,7 @@ import { UserInformationComponent } from './shared/components/user-information/u
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
 
 @Component({
-  standalone: true, 
+  standalone: true,
   selector: 'kadai-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

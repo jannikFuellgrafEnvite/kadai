@@ -23,11 +23,11 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'kadai-monitor-report-table',
-    templateUrl: './report-table.component.html',
-    styleUrls: ['./report-table.component.scss'],
-    standalone: true,
-    imports: [NgIf, NgFor, NgClass, MatButton]
+  selector: 'kadai-monitor-report-table',
+  templateUrl: './report-table.component.html',
+  styleUrls: ['./report-table.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, NgClass, MatButton]
 })
 export class ReportTableComponent implements OnChanges {
   @Input()

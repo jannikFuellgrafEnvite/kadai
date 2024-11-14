@@ -28,11 +28,11 @@ import { MatNavList, MatListItem } from '@angular/material/list';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'kadai-sidenav-list',
-    templateUrl: './sidenav-list.component.html',
-    styleUrls: ['./sidenav-list.component.scss'],
-    standalone: true,
-    imports: [MatNavList, NgIf, MatListItem, RouterLinkActive, RouterLink]
+  selector: 'kadai-sidenav-list',
+  templateUrl: './sidenav-list.component.html',
+  styleUrls: ['./sidenav-list.component.scss'],
+  standalone: true,
+  imports: [MatNavList, NgIf, MatListItem, RouterLinkActive, RouterLink]
 })
 export class SidenavListComponent implements OnInit {
   toggle: boolean = false;

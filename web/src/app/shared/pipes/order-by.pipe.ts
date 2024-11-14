@@ -19,8 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'orderBy',
-    standalone: true
+  name: 'orderBy',
+  standalone: true
 })
 export class OrderBy implements PipeTransform {
   transform(records: Object[], sortKeys?: string[]): any {

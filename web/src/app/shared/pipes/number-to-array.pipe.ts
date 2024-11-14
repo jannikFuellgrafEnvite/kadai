@@ -19,8 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'numberToArray',
-    standalone: true
+  name: 'numberToArray',
+  standalone: true
 })
 export class NumberToArray implements PipeTransform {
   transform(index: number): Array<number> {

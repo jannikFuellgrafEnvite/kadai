@@ -63,12 +63,26 @@ import { TypeAheadComponent } from '../../../shared/components/type-ahead/type-a
 import { MatInput } from '@angular/material/input';
 
 @Component({
-    selector: 'kadai-administration-workbasket-access-items',
-    templateUrl: './workbasket-access-items.component.html',
-    animations: [highlight],
-    styleUrls: ['./workbasket-access-items.component.scss'],
-    standalone: true,
-    imports: [NgIf, NgStyle, MatButton, MatTooltip, MatIcon, FormsModule, ReactiveFormsModule, ResizableWidthDirective, NgFor, NgClass, TypeAheadComponent, MatInput, AsyncPipe]
+  selector: 'kadai-administration-workbasket-access-items',
+  templateUrl: './workbasket-access-items.component.html',
+  animations: [highlight],
+  styleUrls: ['./workbasket-access-items.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgStyle,
+    MatButton,
+    MatTooltip,
+    MatIcon,
+    FormsModule,
+    ReactiveFormsModule,
+    ResizableWidthDirective,
+    NgFor,
+    NgClass,
+    TypeAheadComponent,
+    MatInput,
+    AsyncPipe
+  ]
 })
 export class WorkbasketAccessItemsComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit, AfterViewChecked {
   @Input() workbasket: Workbasket;

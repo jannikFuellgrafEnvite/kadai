@@ -35,11 +35,11 @@ import { NgFor, NgIf } from '@angular/common';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-    selector: 'kadai-task-processing',
-    templateUrl: './task-processing.component.html',
-    styleUrls: ['./task-processing.component.scss'],
-    standalone: true,
-    imports: [MatButton, MatTooltip, MatMenuTrigger, MatIcon, MatMenu, NgFor, MatMenuItem, MatDivider, NgIf]
+  selector: 'kadai-task-processing',
+  templateUrl: './task-processing.component.html',
+  styleUrls: ['./task-processing.component.scss'],
+  standalone: true,
+  imports: [MatButton, MatTooltip, MatMenuTrigger, MatIcon, MatMenu, NgFor, MatMenuItem, MatDivider, NgIf]
 })
 export class TaskProcessingComponent implements OnInit, OnDestroy {
   routeSubscription: Subscription;

@@ -27,11 +27,11 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'kadai-task-custom-fields',
-    templateUrl: './task-custom-fields.component.html',
-    styleUrls: ['./task-custom-fields.component.scss'],
-    standalone: true,
-    imports: [NgIf, NgFor, MatFormField, MatLabel, MatInput, FormsModule]
+  selector: 'kadai-task-custom-fields',
+  templateUrl: './task-custom-fields.component.html',
+  styleUrls: ['./task-custom-fields.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatFormField, MatLabel, MatInput, FormsModule]
 })
 export class TaskCustomFieldsComponent implements OnInit, OnDestroy {
   @Input() task: Task;

@@ -63,12 +63,34 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'kadai-administration-classification-details',
-    templateUrl: './classification-details.component.html',
-    animations: [highlight],
-    styleUrls: ['./classification-details.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatToolbar, MatTooltip, MatButton, MatIcon, MatMenuTrigger, MatMenu, MatMenuItem, FormsModule, MatDivider, MatFormField, MatLabel, MatInput, CdkTextareaAutosize, FieldErrorDisplayComponent, MatSelect, MatSelectTrigger, SvgIconComponent, NgFor, MatOption, AsyncPipe]
+  selector: 'kadai-administration-classification-details',
+  templateUrl: './classification-details.component.html',
+  animations: [highlight],
+  styleUrls: ['./classification-details.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatToolbar,
+    MatTooltip,
+    MatButton,
+    MatIcon,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    FormsModule,
+    MatDivider,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    CdkTextareaAutosize,
+    FieldErrorDisplayComponent,
+    MatSelect,
+    MatSelectTrigger,
+    SvgIconComponent,
+    NgFor,
+    MatOption,
+    AsyncPipe
+  ]
 })
 export class ClassificationDetailsComponent implements OnInit, OnDestroy {
   classification: Classification;

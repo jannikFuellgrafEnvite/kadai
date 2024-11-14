@@ -36,11 +36,26 @@ import { IconTypeComponent } from '../../../administration/components/type-icon/
 import { MapValuesPipe } from '../../pipes/map-values.pipe';
 
 @Component({
-    selector: 'kadai-shared-workbasket-filter',
-    templateUrl: './workbasket-filter.component.html',
-    styleUrls: ['./workbasket-filter.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatFormField, MatLabel, MatInput, FormsModule, MatTooltip, MatButton, MatIcon, MatMenuTrigger, IconTypeComponent, MatMenu, NgFor, MatMenuItem, MapValuesPipe]
+  selector: 'kadai-shared-workbasket-filter',
+  templateUrl: './workbasket-filter.component.html',
+  styleUrls: ['./workbasket-filter.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    MatTooltip,
+    MatButton,
+    MatIcon,
+    MatMenuTrigger,
+    IconTypeComponent,
+    MatMenu,
+    NgFor,
+    MatMenuItem,
+    MapValuesPipe
+  ]
 })
 export class WorkbasketFilterComponent implements OnInit, OnDestroy {
   allTypes: Map<WorkbasketType, string> = ALL_TYPES;

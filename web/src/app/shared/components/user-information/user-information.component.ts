@@ -24,12 +24,12 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'kadai-shared-user-information',
-    templateUrl: './user-information.component.html',
-    styleUrls: ['./user-information.component.scss'],
-    animations: [expandDown],
-    standalone: true,
-    imports: [SvgIconComponent, MatButton]
+  selector: 'kadai-shared-user-information',
+  templateUrl: './user-information.component.html',
+  styleUrls: ['./user-information.component.scss'],
+  animations: [expandDown],
+  standalone: true,
+  imports: [SvgIconComponent, MatButton]
 })
 export class UserInformationComponent implements OnInit {
   userInformation: UserInfo;

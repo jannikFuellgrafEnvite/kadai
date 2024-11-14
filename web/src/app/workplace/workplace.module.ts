@@ -98,25 +98,25 @@ export const tokenInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
 };
 
 @NgModule({
-    imports: [
-        MODULES,
-        MatListModule,
-        MatBadgeModule,
-        MatTooltipModule,
-        MatIconModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatTabsModule,
-        ...DECLARATIONS
-    ],
-    providers: [
-        TaskService,
-        ClassificationCategoriesService,
-        WorkplaceService,
-        provideHttpClient(withInterceptors([tokenInterceptor]))
-    ]
+  imports: [
+    MODULES,
+    MatListModule,
+    MatBadgeModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule,
+    ...DECLARATIONS
+  ],
+  providers: [
+    TaskService,
+    ClassificationCategoriesService,
+    WorkplaceService,
+    provideHttpClient(withInterceptors([tokenInterceptor]))
+  ]
 })
 export class WorkplaceModule {}

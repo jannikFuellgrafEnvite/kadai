@@ -19,8 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'removeEmptyType',
-    standalone: true
+  name: 'removeEmptyType',
+  standalone: true
 })
 export class RemoveNoneTypePipe implements PipeTransform {
   transform(value: any): Object[] {

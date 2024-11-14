@@ -28,11 +28,11 @@ import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.p
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
-    selector: 'kadai-monitor-classification-report',
-    templateUrl: './classification-report.component.html',
-    styleUrls: ['./classification-report.component.scss'],
-    standalone: true,
-    imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe, BaseChartDirective]
+  selector: 'kadai-monitor-classification-report',
+  templateUrl: './classification-report.component.html',
+  styleUrls: ['./classification-report.component.scss'],
+  standalone: true,
+  imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe, BaseChartDirective]
 })
 export class ClassificationReportComponent implements OnInit {
   reportData: ReportData;

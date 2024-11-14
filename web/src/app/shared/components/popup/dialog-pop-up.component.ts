@@ -25,11 +25,11 @@ import { MatButton } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'kadai-shared-dialog-pop-up',
-    templateUrl: './dialog-pop-up.component.html',
-    styleUrls: ['./dialog-pop-up.component.scss'],
-    standalone: true,
-    imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, NgIf]
+  selector: 'kadai-shared-dialog-pop-up',
+  templateUrl: './dialog-pop-up.component.html',
+  styleUrls: ['./dialog-pop-up.component.scss'],
+  standalone: true,
+  imports: [CdkScrollable, MatDialogContent, MatDialogActions, MatButton, MatDialogClose, NgIf]
 })
 export class DialogPopUpComponent implements OnInit {
   message: string;

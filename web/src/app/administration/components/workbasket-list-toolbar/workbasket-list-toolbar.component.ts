@@ -37,12 +37,12 @@ import { SortComponent } from '../../../shared/components/sort/sort.component';
 import { WorkbasketFilterComponent } from '../../../shared/components/workbasket-filter/workbasket-filter.component';
 
 @Component({
-    selector: 'kadai-administration-workbasket-list-toolbar',
-    animations: [expandDown],
-    templateUrl: './workbasket-list-toolbar.component.html',
-    styleUrls: ['./workbasket-list-toolbar.component.scss'],
-    standalone: true,
-    imports: [MatButton, MatTooltip, MatIcon, NgIf, ImportExportComponent, SortComponent, WorkbasketFilterComponent]
+  selector: 'kadai-administration-workbasket-list-toolbar',
+  animations: [expandDown],
+  templateUrl: './workbasket-list-toolbar.component.html',
+  styleUrls: ['./workbasket-list-toolbar.component.scss'],
+  standalone: true,
+  imports: [MatButton, MatTooltip, MatIcon, NgIf, ImportExportComponent, SortComponent, WorkbasketFilterComponent]
 })
 export class WorkbasketListToolbarComponent implements OnInit {
   @Input() workbasketListExpanded: boolean = true;

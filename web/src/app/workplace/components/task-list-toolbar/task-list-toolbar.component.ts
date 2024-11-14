@@ -53,12 +53,30 @@ export enum Search {
 }
 
 @Component({
-    selector: 'kadai-task-list-toolbar',
-    animations: [expandDown],
-    templateUrl: './task-list-toolbar.component.html',
-    styleUrls: ['./task-list-toolbar.component.scss'],
-    standalone: true,
-    imports: [MatTabGroup, MatTab, MatButton, MatTooltip, NgIf, MatIcon, MatFormField, MatLabel, MatInput, FormsModule, MatAutocompleteTrigger, MatAutocomplete, NgFor, MatOption, TaskFilterComponent, SortComponent, AsyncPipe]
+  selector: 'kadai-task-list-toolbar',
+  animations: [expandDown],
+  templateUrl: './task-list-toolbar.component.html',
+  styleUrls: ['./task-list-toolbar.component.scss'],
+  standalone: true,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    MatButton,
+    MatTooltip,
+    NgIf,
+    MatIcon,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    NgFor,
+    MatOption,
+    TaskFilterComponent,
+    SortComponent,
+    AsyncPipe
+  ]
 })
 export class TaskListToolbarComponent implements OnInit {
   @Input() taskDefaultSortBy: TaskQuerySortParameter;

@@ -29,11 +29,18 @@ enum WorkbasketReports {
 }
 
 @Component({
-    selector: 'kadai-monitor-workbasket-report',
-    templateUrl: './workbasket-report.component.html',
-    styleUrls: ['./workbasket-report.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatTabGroup, MatTab, WorkbasketReportDueDateComponent, WorkbasketReportPlannedDateComponent, GermanTimeFormatPipe]
+  selector: 'kadai-monitor-workbasket-report',
+  templateUrl: './workbasket-report.component.html',
+  styleUrls: ['./workbasket-report.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatTabGroup,
+    MatTab,
+    WorkbasketReportDueDateComponent,
+    WorkbasketReportPlannedDateComponent,
+    GermanTimeFormatPipe
+  ]
 })
 export class WorkbasketReportComponent implements OnInit {
   metaInformation: MetaInfoData;

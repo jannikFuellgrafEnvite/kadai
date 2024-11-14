@@ -30,11 +30,23 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'kadai-administration-overview',
-    templateUrl: './administration-overview.component.html',
-    styleUrls: ['./administration-overview.component.scss'],
-    standalone: true,
-    imports: [MatTabNav, MatTabLink, RouterLink, NgIf, MatFormField, MatSelect, MatTooltip, NgFor, MatOption, MatTabNavPanel, RouterOutlet]
+  selector: 'kadai-administration-overview',
+  templateUrl: './administration-overview.component.html',
+  styleUrls: ['./administration-overview.component.scss'],
+  standalone: true,
+  imports: [
+    MatTabNav,
+    MatTabLink,
+    RouterLink,
+    NgIf,
+    MatFormField,
+    MatSelect,
+    MatTooltip,
+    NgFor,
+    MatOption,
+    MatTabNavPanel,
+    RouterOutlet
+  ]
 })
 export class AdministrationOverviewComponent implements OnInit {
   @Input() selectedTab = '';

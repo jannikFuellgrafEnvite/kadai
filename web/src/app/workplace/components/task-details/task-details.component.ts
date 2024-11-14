@@ -43,11 +43,25 @@ import { TaskCustomFieldsComponent } from '../task-custom-fields/task-custom-fie
 import { TaskAttributeValueComponent } from '../task-attribute-value/task-attribute-value.component';
 
 @Component({
-    selector: 'kadai-task-details',
-    templateUrl: './task-details.component.html',
-    styleUrls: ['./task-details.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatButton, MatTooltip, MatIcon, MatMenuTrigger, MatMenu, MatMenuItem, MatTabGroup, MatTab, TaskInformationComponent, TaskStatusDetailsComponent, TaskCustomFieldsComponent, TaskAttributeValueComponent]
+  selector: 'kadai-task-details',
+  templateUrl: './task-details.component.html',
+  styleUrls: ['./task-details.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatButton,
+    MatTooltip,
+    MatIcon,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatTabGroup,
+    MatTab,
+    TaskInformationComponent,
+    TaskStatusDetailsComponent,
+    TaskCustomFieldsComponent,
+    TaskAttributeValueComponent
+  ]
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   task: Task;

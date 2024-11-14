@@ -28,11 +28,11 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'kadai-task-attribute-value',
-    templateUrl: './task-attribute-value.component.html',
-    styleUrls: ['./task-attribute-value.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatDivider, NgFor, MatButton, MatTooltip, MatIcon, MatFormField, MatInput, FormsModule]
+  selector: 'kadai-task-attribute-value',
+  templateUrl: './task-attribute-value.component.html',
+  styleUrls: ['./task-attribute-value.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatDivider, NgFor, MatButton, MatTooltip, MatIcon, MatFormField, MatInput, FormsModule]
 })
 export class TaskAttributeValueComponent implements OnInit {
   @Input() callbackInfo = false;

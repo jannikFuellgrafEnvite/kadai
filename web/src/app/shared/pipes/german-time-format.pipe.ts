@@ -19,8 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'germanTimeFormat',
-    standalone: true
+  name: 'germanTimeFormat',
+  standalone: true
 })
 export class GermanTimeFormatPipe implements PipeTransform {
   transform(value: string): string {

@@ -25,11 +25,11 @@ import { ReportTableComponent } from '../report-table/report-table.component';
 import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
 
 @Component({
-    selector: 'kadai-monitor-timestamp-report',
-    templateUrl: './timestamp-report.component.html',
-    styleUrls: ['./timestamp-report.component.scss'],
-    standalone: true,
-    imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe]
+  selector: 'kadai-monitor-timestamp-report',
+  templateUrl: './timestamp-report.component.html',
+  styleUrls: ['./timestamp-report.component.scss'],
+  standalone: true,
+  imports: [NgIf, ReportTableComponent, GermanTimeFormatPipe]
 })
 export class TimestampReportComponent implements OnInit {
   reportData: ReportData;

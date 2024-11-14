@@ -56,12 +56,27 @@ import { MatDivider } from '@angular/material/divider';
 import { OrderBy } from '../../../shared/pipes/order-by.pipe';
 
 @Component({
-    selector: 'kadai-administration-workbasket-distribution-targets-list',
-    templateUrl: './workbasket-distribution-targets-list.component.html',
-    styleUrls: ['./workbasket-distribution-targets-list.component.scss'],
-    animations: [expandDown],
-    standalone: true,
-    imports: [MatToolbar, MatTooltip, MatButton, NgIf, MatIcon, WorkbasketFilterComponent, MatSelectionList, CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, MatListOption, IconTypeComponent, MatDivider, OrderBy]
+  selector: 'kadai-administration-workbasket-distribution-targets-list',
+  templateUrl: './workbasket-distribution-targets-list.component.html',
+  styleUrls: ['./workbasket-distribution-targets-list.component.scss'],
+  animations: [expandDown],
+  standalone: true,
+  imports: [
+    MatToolbar,
+    MatTooltip,
+    MatButton,
+    NgIf,
+    MatIcon,
+    WorkbasketFilterComponent,
+    MatSelectionList,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    MatListOption,
+    IconTypeComponent,
+    MatDivider,
+    OrderBy
+  ]
 })
 export class WorkbasketDistributionTargetsListComponent
   implements AfterContentChecked, OnChanges, OnInit, AfterViewInit

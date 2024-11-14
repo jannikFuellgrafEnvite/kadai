@@ -123,8 +123,6 @@ const PROVIDERS = [
   provideHttpClient(withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }))
 ];
 
-
-
 export function startupServiceFactory(startupService: StartupService): () => Promise<any> {
   return (): Promise<any> => startupService.load();
 }

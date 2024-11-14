@@ -50,11 +50,29 @@ import { ClassificationTypesSelectorComponent } from '../classification-types-se
 import { KadaiTreeComponent } from '../tree/tree.component';
 
 @Component({
-    selector: 'kadai-administration-classification-list',
-    templateUrl: './classification-list.component.html',
-    styleUrls: ['./classification-list.component.scss'],
-    standalone: true,
-    imports: [MatButton, MatTooltip, MatIcon, ImportExportComponent, MatMenuTrigger, NgIf, SvgIconComponent, MatMenu, MatMenuItem, NgFor, MatFormField, MatLabel, MatInput, FormsModule, ClassificationTypesSelectorComponent, KadaiTreeComponent, AsyncPipe]
+  selector: 'kadai-administration-classification-list',
+  templateUrl: './classification-list.component.html',
+  styleUrls: ['./classification-list.component.scss'],
+  standalone: true,
+  imports: [
+    MatButton,
+    MatTooltip,
+    MatIcon,
+    ImportExportComponent,
+    MatMenuTrigger,
+    NgIf,
+    SvgIconComponent,
+    MatMenu,
+    MatMenuItem,
+    NgFor,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    ClassificationTypesSelectorComponent,
+    KadaiTreeComponent,
+    AsyncPipe
+  ]
 })
 export class ClassificationListComponent implements OnInit, OnDestroy {
   kadaiType = KadaiType;

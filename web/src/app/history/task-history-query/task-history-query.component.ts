@@ -28,15 +28,41 @@ import { merge } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';
 import { RequestInProgressService } from '../../shared/services/request-in-progress/request-in-progress.service';
 import { Pair } from '../../shared/models/pair';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow
+} from '@angular/material/table';
 import { GermanTimeFormatPipe } from '../../shared/pipes/german-time-format.pipe';
 
 @Component({
-    selector: 'kadai-task-query',
-    templateUrl: './task-history-query.component.html',
-    styleUrls: ['./task-history-query.component.scss'],
-    standalone: true,
-    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginationComponent, GermanTimeFormatPipe]
+  selector: 'kadai-task-query',
+  templateUrl: './task-history-query.component.html',
+  styleUrls: ['./task-history-query.component.scss'],
+  standalone: true,
+  imports: [
+    MatTable,
+    MatSort,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatSortHeader,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    PaginationComponent,
+    GermanTimeFormatPipe
+  ]
 })
 export class TaskHistoryQueryComponent implements OnInit {
   data: TaskHistoryEventData[] = [];

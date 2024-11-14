@@ -39,11 +39,11 @@ import { NgFor, AsyncPipe } from '@angular/common';
  * or classification is stored in their respective container component.
  */
 @Component({
-    selector: 'kadai-administration-import-export',
-    templateUrl: './import-export.component.html',
-    styleUrls: ['./import-export.component.scss'],
-    standalone: true,
-    imports: [MatButton, MatTooltip, MatIcon, FormsModule, MatMenuTrigger, MatMenu, MatMenuItem, NgFor, AsyncPipe]
+  selector: 'kadai-administration-import-export',
+  templateUrl: './import-export.component.html',
+  styleUrls: ['./import-export.component.scss'],
+  standalone: true,
+  imports: [MatButton, MatTooltip, MatIcon, FormsModule, MatMenuTrigger, MatMenu, MatMenuItem, NgFor, AsyncPipe]
 })
 export class ImportExportComponent implements OnInit, OnDestroy {
   @Input() currentSelection: KadaiType;

@@ -18,7 +18,15 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { FormsValidatorService } from 'app/shared/services/forms-validator/forms-validator.service';
 import { WorkbasketAccessItems } from 'app/shared/models/workbasket-access-items';
@@ -48,7 +56,18 @@ import { TypeAheadComponent } from '../../../shared/components/type-ahead/type-a
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import {
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow
+} from '@angular/material/table';
 import { SortComponent } from '../../../shared/components/sort/sort.component';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -58,11 +77,40 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'kadai-administration-access-items-management',
-    templateUrl: './access-items-management.component.html',
-    styleUrls: ['./access-items-management.component.scss'],
-    standalone: true,
-    imports: [TypeAheadComponent, NgIf, SvgIconComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, FormsModule, ReactiveFormsModule, NgFor, SortComponent, MatFormField, MatLabel, MatInput, MatTooltip, MatCheckbox, MatButton, MatIcon, AsyncPipe]
+  selector: 'kadai-administration-access-items-management',
+  templateUrl: './access-items-management.component.html',
+  styleUrls: ['./access-items-management.component.scss'],
+  standalone: true,
+  imports: [
+    TypeAheadComponent,
+    NgIf,
+    SvgIconComponent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    SortComponent,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatTooltip,
+    MatCheckbox,
+    MatButton,
+    MatIcon,
+    AsyncPipe
+  ]
 })
 export class AccessItemsManagementComponent implements OnInit {
   accessIdPrevious: string;

@@ -25,11 +25,11 @@ import { FormsModule } from '@angular/forms';
 import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
 
 @Component({
-    selector: 'kadai-task-status-details',
-    templateUrl: './task-status-details.component.html',
-    styleUrls: ['./task-status-details.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatFormField, MatLabel, MatInput, FormsModule, GermanTimeFormatPipe]
+  selector: 'kadai-task-status-details',
+  templateUrl: './task-status-details.component.html',
+  styleUrls: ['./task-status-details.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatFormField, MatLabel, MatInput, FormsModule, GermanTimeFormatPipe]
 })
 export class TaskStatusDetailsComponent implements OnInit {
   @Input() task: Task;

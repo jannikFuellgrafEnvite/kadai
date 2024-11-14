@@ -26,11 +26,11 @@ import { NgIf } from '@angular/common';
 import { SvgIconComponent } from 'angular-svg-icon';
 
 @Component({
-    selector: 'kadai-shared-no-access',
-    templateUrl: './no-access.component.html',
-    styleUrls: ['./no-access.component.scss'],
-    standalone: true,
-    imports: [NgIf, SvgIconComponent]
+  selector: 'kadai-shared-no-access',
+  templateUrl: './no-access.component.html',
+  styleUrls: ['./no-access.component.scss'],
+  standalone: true,
+  imports: [NgIf, SvgIconComponent]
 })
 export class NoAccessComponent implements OnInit {
   showNoAccess = false;

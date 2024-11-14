@@ -28,11 +28,11 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'kadai-administration-classification-types-selector',
-    templateUrl: './classification-types-selector.component.html',
-    styleUrls: ['./classification-types-selector.component.scss'],
-    standalone: true,
-    imports: [MatFormField, MatLabel, MatSelect, MatTooltip, NgFor, MatOption, AsyncPipe]
+  selector: 'kadai-administration-classification-types-selector',
+  templateUrl: './classification-types-selector.component.html',
+  styleUrls: ['./classification-types-selector.component.scss'],
+  standalone: true,
+  imports: [MatFormField, MatLabel, MatSelect, MatTooltip, NgFor, MatOption, AsyncPipe]
 })
 export class ClassificationTypesSelectorComponent {
   @Select(ClassificationSelectors.selectedClassificationType) classificationTypeSelected$: Observable<string>;

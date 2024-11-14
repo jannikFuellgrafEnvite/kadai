@@ -48,11 +48,21 @@ import { MatDivider } from '@angular/material/divider';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
-    selector: 'kadai-administration-workbasket-list',
-    templateUrl: './workbasket-list.component.html',
-    styleUrls: ['./workbasket-list.component.scss'],
-    standalone: true,
-    imports: [WorkbasketListToolbarComponent, NgIf, MatSelectionList, NgFor, MatListOption, IconTypeComponent, MatDivider, PaginationComponent, AsyncPipe]
+  selector: 'kadai-administration-workbasket-list',
+  templateUrl: './workbasket-list.component.html',
+  styleUrls: ['./workbasket-list.component.scss'],
+  standalone: true,
+  imports: [
+    WorkbasketListToolbarComponent,
+    NgIf,
+    MatSelectionList,
+    NgFor,
+    MatListOption,
+    IconTypeComponent,
+    MatDivider,
+    PaginationComponent,
+    AsyncPipe
+  ]
 })
 export class WorkbasketListComponent implements OnInit, OnDestroy {
   selectedId = '';

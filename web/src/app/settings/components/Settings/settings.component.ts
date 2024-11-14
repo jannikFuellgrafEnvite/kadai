@@ -36,11 +36,22 @@ import { FormsModule } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
-    selector: 'kadai-administration-settings',
-    templateUrl: './settings.component.html',
-    styleUrls: ['./settings.component.scss'],
-    standalone: true,
-    imports: [MatButton, MatTooltip, MatIcon, NgFor, NgIf, MatFormField, MatLabel, MatInput, FormsModule, CdkTextareaAutosize]
+  selector: 'kadai-administration-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss'],
+  standalone: true,
+  imports: [
+    MatButton,
+    MatTooltip,
+    MatIcon,
+    NgFor,
+    NgIf,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    CdkTextareaAutosize
+  ]
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   settingTypes = SettingTypes;

@@ -50,11 +50,29 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
-    selector: 'kadai-task-information',
-    templateUrl: './task-information.component.html',
-    styleUrls: ['./task-information.component.scss'],
-    standalone: true,
-    imports: [NgIf, FormsModule, MatFormField, MatLabel, MatInput, FieldErrorDisplayComponent, MatSelect, NgFor, MatOption, TypeAheadComponent, MatTooltip, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, CdkTextareaAutosize, AsyncPipe]
+  selector: 'kadai-task-information',
+  templateUrl: './task-information.component.html',
+  styleUrls: ['./task-information.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FieldErrorDisplayComponent,
+    MatSelect,
+    NgFor,
+    MatOption,
+    TypeAheadComponent,
+    MatTooltip,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDatepicker,
+    CdkTextareaAutosize,
+    AsyncPipe
+  ]
 })
 export class TaskInformationComponent implements OnInit, OnChanges, OnDestroy {
   @Input()

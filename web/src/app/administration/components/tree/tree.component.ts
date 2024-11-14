@@ -54,11 +54,11 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-    selector: 'kadai-administration-tree',
-    templateUrl: './tree.component.html',
-    styleUrls: ['./tree.component.scss'],
-    standalone: true,
-    imports: [NgIf, TreeModule, SvgIconComponent, MatTooltip]
+  selector: 'kadai-administration-tree',
+  templateUrl: './tree.component.html',
+  styleUrls: ['./tree.component.scss'],
+  standalone: true,
+  imports: [NgIf, TreeModule, SvgIconComponent, MatTooltip]
 })
 export class KadaiTreeComponent implements OnInit, AfterViewChecked, OnDestroy {
   treeNodes: TreeNodeModel[];

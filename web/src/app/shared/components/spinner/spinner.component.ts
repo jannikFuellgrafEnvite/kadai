@@ -23,11 +23,11 @@ import { NgClass, NgIf } from '@angular/common';
 declare let $: any;
 
 @Component({
-    selector: 'kadai-shared-spinner',
-    templateUrl: './spinner.component.html',
-    styleUrls: ['./spinner.component.scss'],
-    standalone: true,
-    imports: [NgClass, NgIf]
+  selector: 'kadai-shared-spinner',
+  templateUrl: './spinner.component.html',
+  styleUrls: ['./spinner.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgIf]
 })
 export class SpinnerComponent implements OnDestroy {
   showSpinner: boolean;

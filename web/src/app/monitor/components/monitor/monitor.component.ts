@@ -21,11 +21,11 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
 
 @Component({
-    selector: 'kadai-monitor',
-    templateUrl: './monitor.component.html',
-    styleUrls: ['./monitor.component.scss'],
-    standalone: true,
-    imports: [MatTabNav, MatTabLink, RouterLink, MatTabNavPanel, RouterOutlet]
+  selector: 'kadai-monitor',
+  templateUrl: './monitor.component.html',
+  styleUrls: ['./monitor.component.scss'],
+  standalone: true,
+  imports: [MatTabNav, MatTabLink, RouterLink, MatTabNavPanel, RouterOutlet]
 })
 export class MonitorComponent implements OnInit {
   selectedTab = '';

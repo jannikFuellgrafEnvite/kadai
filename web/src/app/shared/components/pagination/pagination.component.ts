@@ -39,11 +39,22 @@ import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autoc
 import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'kadai-shared-pagination',
-    templateUrl: './pagination.component.html',
-    styleUrls: ['./pagination.component.scss'],
-    standalone: true,
-    imports: [MatPaginator, NgClass, NgIf, MatFormField, MatInput, FormsModule, MatAutocompleteTrigger, MatAutocomplete, NgFor, MatOption]
+  selector: 'kadai-shared-pagination',
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.scss'],
+  standalone: true,
+  imports: [
+    MatPaginator,
+    NgClass,
+    NgIf,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    NgFor,
+    MatOption
+  ]
 })
 export class PaginationComponent implements OnInit, OnChanges {
   @Input() page: Page;

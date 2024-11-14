@@ -35,11 +35,25 @@ import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autoc
 import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'kadai-shared-type-ahead',
-    templateUrl: './type-ahead.component.html',
-    styleUrls: ['./type-ahead.component.scss'],
-    standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, NgClass, MatFormField, MatLabel, MatTooltip, MatInput, MatAutocompleteTrigger, NgIf, MatError, MatAutocomplete, NgFor, MatOption]
+  selector: 'kadai-shared-type-ahead',
+  templateUrl: './type-ahead.component.html',
+  styleUrls: ['./type-ahead.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgClass,
+    MatFormField,
+    MatLabel,
+    MatTooltip,
+    MatInput,
+    MatAutocompleteTrigger,
+    NgIf,
+    MatError,
+    MatAutocomplete,
+    NgFor,
+    MatOption
+  ]
 })
 export class TypeAheadComponent implements OnInit, OnDestroy {
   @Input() savedAccessId;

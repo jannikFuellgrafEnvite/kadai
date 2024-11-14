@@ -52,11 +52,26 @@ import { WorkbasketAccessItemsComponent } from '../workbasket-access-items/workb
 import { WorkbasketDistributionTargetsComponent } from '../workbasket-distribution-targets/workbasket-distribution-targets.component';
 
 @Component({
-    selector: 'kadai-administration-workbasket-details',
-    templateUrl: './workbasket-details.component.html',
-    styleUrls: ['./workbasket-details.component.scss'],
-    standalone: true,
-    imports: [MatToolbar, MatTooltip, MatButton, MatIcon, MatMenuTrigger, MatMenu, MatMenuItem, MatTabGroup, MatTab, WorkbasketInformationComponent, WorkbasketAccessItemsComponent, MatTabContent, WorkbasketDistributionTargetsComponent, AsyncPipe]
+  selector: 'kadai-administration-workbasket-details',
+  templateUrl: './workbasket-details.component.html',
+  styleUrls: ['./workbasket-details.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbar,
+    MatTooltip,
+    MatButton,
+    MatIcon,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatTabGroup,
+    MatTab,
+    WorkbasketInformationComponent,
+    WorkbasketAccessItemsComponent,
+    MatTabContent,
+    WorkbasketDistributionTargetsComponent,
+    AsyncPipe
+  ]
 })
 export class WorkbasketDetailsComponent implements OnInit, OnDestroy {
   workbasket: Workbasket;

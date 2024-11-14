@@ -40,11 +40,11 @@ import { TaskListComponent } from '../task-list/task-list.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
-    selector: 'kadai-task-master',
-    templateUrl: './task-master.component.html',
-    styleUrls: ['./task-master.component.scss'],
-    standalone: true,
-    imports: [TaskListToolbarComponent, NgIf, TaskListComponent, PaginationComponent]
+  selector: 'kadai-task-master',
+  templateUrl: './task-master.component.html',
+  styleUrls: ['./task-master.component.scss'],
+  standalone: true,
+  imports: [TaskListToolbarComponent, NgIf, TaskListComponent, PaginationComponent]
 })
 export class TaskMasterComponent implements OnInit, OnDestroy {
   tasks: Task[];

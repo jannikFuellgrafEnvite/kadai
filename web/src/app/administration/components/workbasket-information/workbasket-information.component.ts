@@ -56,11 +56,30 @@ import { MapValuesPipe } from '../../../shared/pipes/map-values.pipe';
 import { RemoveNoneTypePipe } from '../../../shared/pipes/remove-empty-type.pipe';
 
 @Component({
-    selector: 'kadai-administration-workbasket-information',
-    templateUrl: './workbasket-information.component.html',
-    styleUrls: ['./workbasket-information.component.scss'],
-    standalone: true,
-    imports: [NgIf, FormsModule, MatDivider, MatFormField, MatLabel, MatInput, FieldErrorDisplayComponent, TypeAheadComponent, MatSelect, MatSelectTrigger, IconTypeComponent, NgFor, MatOption, CdkTextareaAutosize, MatError, AsyncPipe, MapValuesPipe, RemoveNoneTypePipe]
+  selector: 'kadai-administration-workbasket-information',
+  templateUrl: './workbasket-information.component.html',
+  styleUrls: ['./workbasket-information.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    MatDivider,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FieldErrorDisplayComponent,
+    TypeAheadComponent,
+    MatSelect,
+    MatSelectTrigger,
+    IconTypeComponent,
+    NgFor,
+    MatOption,
+    CdkTextareaAutosize,
+    MatError,
+    AsyncPipe,
+    MapValuesPipe,
+    RemoveNoneTypePipe
+  ]
 })
 export class WorkbasketInformationComponent implements OnInit, OnChanges, OnDestroy {
   @Input()

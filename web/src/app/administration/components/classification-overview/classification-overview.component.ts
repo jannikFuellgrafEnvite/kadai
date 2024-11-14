@@ -34,11 +34,11 @@ import { ClassificationDetailsComponent } from '../classification-details/classi
 import { SvgIconComponent } from 'angular-svg-icon';
 
 @Component({
-    selector: 'kadai-administration-classification-overview',
-    templateUrl: './classification-overview.component.html',
-    styleUrls: ['./classification-overview.component.scss'],
-    standalone: true,
-    imports: [ClassificationListComponent, NgIf, ClassificationDetailsComponent, SvgIconComponent]
+  selector: 'kadai-administration-classification-overview',
+  templateUrl: './classification-overview.component.html',
+  styleUrls: ['./classification-overview.component.scss'],
+  standalone: true,
+  imports: [ClassificationListComponent, NgIf, ClassificationDetailsComponent, SvgIconComponent]
 })
 export class ClassificationOverviewComponent implements OnInit, OnDestroy {
   showDetail = false;

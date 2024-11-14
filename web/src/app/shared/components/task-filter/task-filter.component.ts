@@ -33,11 +33,11 @@ import { MatOption } from '@angular/material/core';
 import { MapValuesPipe } from '../../pipes/map-values.pipe';
 
 @Component({
-    selector: 'kadai-shared-task-filter',
-    templateUrl: './task-filter.component.html',
-    styleUrls: ['./task-filter.component.scss'],
-    standalone: true,
-    imports: [MatFormField, MatTooltip, MatLabel, MatInput, FormsModule, MatSelect, NgFor, MatOption, MapValuesPipe]
+  selector: 'kadai-shared-task-filter',
+  templateUrl: './task-filter.component.html',
+  styleUrls: ['./task-filter.component.scss'],
+  standalone: true,
+  imports: [MatFormField, MatTooltip, MatLabel, MatInput, FormsModule, MatSelect, NgFor, MatOption, MapValuesPipe]
 })
 export class TaskFilterComponent implements OnInit, OnDestroy {
   filter: TaskQueryFilterParameter;

@@ -28,12 +28,12 @@ import { MatIcon } from '@angular/material/icon';
 import { SvgIconComponent } from 'angular-svg-icon';
 
 @Component({
-    selector: 'kadai-shared-nav-bar',
-    templateUrl: './nav-bar.component.html',
-    styleUrls: ['./nav-bar.component.scss'],
-    animations: [expandRight],
-    standalone: true,
-    imports: [MatToolbar, MatIconButton, MatIcon, SvgIconComponent]
+  selector: 'kadai-shared-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss'],
+  animations: [expandRight],
+  standalone: true,
+  imports: [MatToolbar, MatIconButton, MatIcon, SvgIconComponent]
 })
 export class NavBarComponent implements OnInit {
   selectedRoute = '';

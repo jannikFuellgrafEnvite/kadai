@@ -26,11 +26,11 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { GermanTimeFormatPipe } from '../../../shared/pipes/german-time-format.pipe';
 
 @Component({
-    selector: 'kadai-task-list',
-    templateUrl: './task-list.component.html',
-    styleUrls: ['./task-list.component.scss'],
-    standalone: true,
-    imports: [NgIf, MatSelectionList, NgFor, MatListOption, MatDivider, SvgIconComponent, GermanTimeFormatPipe]
+  selector: 'kadai-task-list',
+  templateUrl: './task-list.component.html',
+  styleUrls: ['./task-list.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatSelectionList, NgFor, MatListOption, MatDivider, SvgIconComponent, GermanTimeFormatPipe]
 })
 export class TaskListComponent implements OnInit {
   @Input()

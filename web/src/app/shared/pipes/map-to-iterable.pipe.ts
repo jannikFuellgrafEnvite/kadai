@@ -19,8 +19,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'mapToIterable',
-    standalone: true
+  name: 'mapToIterable',
+  standalone: true
 })
 export class MapToIterable implements PipeTransform {
   transform(dict: Object) {
