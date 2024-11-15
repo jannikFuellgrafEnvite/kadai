@@ -93,6 +93,7 @@ describe('WorkbasketAccessItemsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        WorkbasketAccessItemsComponent,
         FormsModule,
         ReactiveFormsModule,
         TypeaheadModule.forRoot(),
@@ -108,7 +109,7 @@ describe('WorkbasketAccessItemsComponent', () => {
         MatIconModule,
         MatTooltipModule
       ],
-      declarations: [WorkbasketAccessItemsComponent, TypeAheadComponent, SpinnerStub],
+      declarations: [TypeAheadComponent, SpinnerStub],
       providers: [
         {
           provide: RequestInProgressService,

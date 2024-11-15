@@ -67,7 +67,7 @@ const notificationServiceSpy: Partial<NotificationService> = {
   showDialog: showDialogFn
 };
 
-@Component({ selector: 'svg-icon', template: '' })
+@Component({ selector: 'svg-icon', template: '', standalone: true })
 class SvgIconStub {}
 
 describe('AccessItemsManagementComponent', () => {
@@ -77,12 +77,12 @@ describe('AccessItemsManagementComponent', () => {
   let store: Store;
   let actions$: Observable<any>;
 
-  @Component({ selector: 'kadai-shared-spinner', template: '' })
+  @Component({ selector: 'kadai-shared-spinner', template: '', standalone: true })
   class KadaiSharedSpinnerStub {
     @Input() isRunning: boolean;
   }
 
-  @Component({ selector: 'kadai-shared-sort', template: '' })
+  @Component({ selector: 'kadai-shared-sort', template: '', standalone: true })
   class KadaiSharedSortStub {
     @Input() sortingFields: Map<WorkbasketAccessItemQuerySortParameter, string>;
     @Input() defaultSortBy: WorkbasketAccessItemQuerySortParameter;
@@ -92,6 +92,7 @@ describe('AccessItemsManagementComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        AccessItemsManagementComponent,
         NgxsModule.forRoot([EngineConfigurationState, AccessItemsManagementState]),
         FormsModule,
         ReactiveFormsModule,
@@ -109,24 +110,15 @@ describe('AccessItemsManagementComponent', () => {
         MatDividerModule,
         MatListModule,
         MatExpansionModule,
-        MatTableModule
-      ],
-      declarations: [
-        AccessItemsManagementComponent,
-        TypeAheadComponent,
-        KadaiSharedSortStub,
-        KadaiSharedSpinnerStub,
+        MatTableModule,
+        TypeAheadComponent, 
+        KadaiSharedSortStub, 
+        KadaiSharedSpinnerStub, 
         SvgIconStub
       ],
       providers: [
-        {
-          provide: FormsValidatorService,
-          useValue: formValidatorServiceSpy
-        },
-        {
-          provide: NotificationService,
-          useValue: notificationServiceSpy
-        },
+        { provide: FormsValidatorService, useValue: formValidatorServiceSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
         RequestInProgressService,
         ClassificationCategoriesService,
         StartupService,

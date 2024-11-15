@@ -51,6 +51,7 @@ describe('SettingsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        SettingsComponent,
         NgxsModule.forRoot([SettingsState]),
         FormsModule,
         MatIconModule,
@@ -59,7 +60,7 @@ describe('SettingsComponent', () => {
         MatTooltipModule,
         NoopAnimationsModule
       ],
-      declarations: [SettingsComponent],
+      declarations: [],
       providers: [
         RequestInProgressService,
         {

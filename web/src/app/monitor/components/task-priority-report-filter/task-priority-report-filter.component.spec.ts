@@ -37,13 +37,14 @@ describe('TaskPriorityReportFilterComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        TaskPriorityReportFilterComponent,
         NgxsModule.forRoot([SettingsState]),
         MatCheckboxModule,
         MatExpansionModule,
         NoopAnimationsModule,
         MatDialogModule
       ],
-      declarations: [TaskPriorityReportFilterComponent],
+      declarations: [],
       providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
     }).compileComponents();
 

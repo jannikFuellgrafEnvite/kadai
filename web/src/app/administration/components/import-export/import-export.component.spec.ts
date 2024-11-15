@@ -63,8 +63,8 @@ xdescribe('ImportExportComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [],
-      declarations: [ImportExportComponent],
+      imports: [ImportExportComponent],
+      declarations: [],
       providers: [
         StartupService,
         KadaiEngineService,

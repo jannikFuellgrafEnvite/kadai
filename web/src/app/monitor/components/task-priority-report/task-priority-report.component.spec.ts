@@ -64,8 +64,8 @@ describe('TaskPriorityReportComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([SettingsState]), MatTableModule, MatDividerModule],
-      declarations: [TaskPriorityReportComponent, GermanTimeFormatPipe, CanvasStub, TaskPriorityReportFilterStub],
+      imports: [TaskPriorityReportComponent, NgxsModule.forRoot([SettingsState]), MatTableModule, MatDividerModule],
+      declarations: [GermanTimeFormatPipe, CanvasStub, TaskPriorityReportFilterStub],
       providers: [
         RequestInProgressService,
         { provide: MonitorService, useValue: monitorServiceSpy },

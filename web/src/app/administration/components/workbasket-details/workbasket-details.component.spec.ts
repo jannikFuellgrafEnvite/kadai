@@ -47,13 +47,13 @@ import { take } from 'rxjs/operators';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Component({ selector: 'kadai-administration-workbasket-information', template: '<div>i</div>' })
+@Component({ selector: 'kadai-administration-workbasket-information', template: '<div>i</div>', standalone: true })
 class WorkbasketInformationStub {
   @Input() workbasket: Workbasket;
   @Input() action: ACTION;
 }
 
-@Component({ selector: 'kadai-administration-workbasket-access-items', template: '' })
+@Component({ selector: 'kadai-administration-workbasket-access-items', template: '', standalone: true })
 class WorkbasketAccessItemsStub {
   @Input() workbasket: Workbasket;
   @Input() action: ACTION;
@@ -61,7 +61,7 @@ class WorkbasketAccessItemsStub {
   @Input() expanded: boolean;
 }
 
-@Component({ selector: 'kadai-administration-workbasket-distribution-targets', template: '' })
+@Component({ selector: 'kadai-administration-workbasket-distribution-targets', template: '', standalone: true })
 class WorkbasketDistributionTargetsStub {
   @Input() workbasket: Workbasket;
   @Input() action: ACTION;
@@ -98,19 +98,14 @@ describe('WorkbasketDetailsComponent', () => {
         MatMenuModule,
         MatToolbarModule,
         MatTooltipModule,
-        NoopAnimationsModule
-      ],
-      declarations: [
+        NoopAnimationsModule,
         WorkbasketDetailsComponent,
         WorkbasketAccessItemsStub,
         WorkbasketDistributionTargetsStub,
         WorkbasketInformationStub
       ],
       providers: [
-        {
-          provide: DomainService,
-          useValue: domainServiceSpy
-        },
+        { provide: DomainService, useValue: domainServiceSpy },
         ImportExportService,
         WorkbasketService,
         RequestInProgressService,

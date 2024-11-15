@@ -42,20 +42,20 @@ const domainServiceMock: Partial<DomainService> = {
   getSelectedDomain: jest.fn().mockReturnValue(of('A'))
 };
 
-@Component({ selector: 'kadai-administration-import-export', template: '' })
+@Component({ selector: 'kadai-administration-import-export', template: '', standalone: true })
 class ImportExportStub {
   @Input() currentSelection: KadaiType;
   @Input() parentComponent;
 }
 
-@Component({ selector: 'kadai-shared-sort', template: '' })
+@Component({ selector: 'kadai-shared-sort', template: '', standalone: true })
 class SortStub {
   @Input() sortingFields: Map<WorkbasketQuerySortParameter, string>;
   @Input() defaultSortBy: WorkbasketQuerySortParameter;
   @Output() performSorting = new EventEmitter<Sorting<WorkbasketQuerySortParameter>>();
 }
 
-@Component({ selector: 'kadai-shared-workbasket-filter', template: '' })
+@Component({ selector: 'kadai-shared-workbasket-filter', template: '', standalone: true })
 class FilterStub {
   @Input() isExpanded = false;
 }
@@ -72,22 +72,20 @@ describe('WorkbasketListToolbarComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        WorkbasketListToolbarComponent,
         RouterTestingModule,
         NgxsModule.forRoot([WorkbasketState]),
         NoopAnimationsModule,
         MatIconModule,
-        MatDialogModule
+        MatDialogModule,
+        ImportExportStub, 
+        SortStub, 
+        FilterStub
       ],
-      declarations: [WorkbasketListToolbarComponent, ImportExportStub, SortStub, FilterStub],
+      declarations: [],
       providers: [
-        {
-          provide: DomainService,
-          useValue: domainServiceMock
-        },
-        {
-          provide: RequestInProgressService,
-          useValue: requestInProgressServiceSpy
-        },
+        { provide: DomainService, useValue: domainServiceMock },
+        { provide: RequestInProgressService, useValue: requestInProgressServiceSpy },
         WorkbasketService,
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting()

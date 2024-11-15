@@ -37,24 +37,25 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RequestInProgressService } from '../../../shared/services/request-in-progress/request-in-progress.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SvgIconRegistryService, SvgLoader } from 'angular-svg-icon';
 
-@Component({ selector: 'kadai-shared-workbasket-filter', template: '' })
+@Component({ selector: 'kadai-shared-workbasket-filter', template: '' , standalone: true})
 class FilterStub {
   @Input() component = 'availableDistributionTargetList';
 }
 
-@Component({ selector: 'kadai-shared-spinner', template: '' })
+@Component({ selector: 'kadai-shared-spinner', template: '' , standalone: true})
 class SpinnerStub {
   @Input() isRunning: boolean;
 }
 
-@Component({ selector: 'kadai-administration-icon-type', template: '' })
+@Component({ selector: 'kadai-administration-icon-type', template: '' , standalone: true})
 class IconTypeStub {
   @Input() type: WorkbasketType;
   @Input() text: string;
 }
 
-@Pipe({ name: 'orderBy' })
+@Pipe({ name: 'orderBy', standalone: true })
 class OrderByMock implements PipeTransform {
   transform(list, sortBy): any {
     return list;
@@ -94,6 +95,7 @@ describe('WorkbasketDistributionTargetsListComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        WorkbasketDistributionTargetsListComponent,
         MatIconModule,
         MatToolbarModule,
         MatListModule,
@@ -102,17 +104,19 @@ describe('WorkbasketDistributionTargetsListComponent', () => {
         InfiniteScrollModule,
         ScrollingModule,
         NoopAnimationsModule,
-        NgxsModule.forRoot([WorkbasketState])
+        NgxsModule.forRoot([WorkbasketState]),
+        FilterStub, 
+        SpinnerStub, 
+        IconTypeStub, 
+        OrderByMock
       ],
-      declarations: [WorkbasketDistributionTargetsListComponent, FilterStub, SpinnerStub, IconTypeStub, OrderByMock],
       providers: [
         { provide: HttpClient, useValue: httpSpy },
-        {
-          provide: DomainService,
-          useValue: domainServiceSpy
-        },
+        { provide: DomainService, useValue: domainServiceSpy },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: RequestInProgressService, useValue: requestInProgressServiceSpy }
+        { provide: RequestInProgressService, useValue: requestInProgressServiceSpy },
+        { provide: SvgLoader, useValue: {} },
+        SvgIconRegistryService
       ]
     }).compileComponents();
 

@@ -52,8 +52,9 @@ describe('SidenavListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [SidenavListComponent],
+      declarations: [],
       imports: [
+        SidenavListComponent,
         MatButtonModule,
         MatSidenavModule,
         MatCheckboxModule,

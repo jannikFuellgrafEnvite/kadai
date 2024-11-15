@@ -34,6 +34,7 @@ describe('PaginationComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        PaginationComponent,
         MatPaginatorModule,
         MatAutocompleteModule,
         FormsModule,
@@ -41,7 +42,7 @@ describe('PaginationComponent', () => {
         MatInputModule,
         NoopAnimationsModule
       ],
-      declarations: [PaginationComponent],
+      declarations: [],
       providers: []
     }).compileComponents();
 

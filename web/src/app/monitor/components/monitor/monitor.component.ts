@@ -17,8 +17,14 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { Routes } from '@angular/router';
+import { TaskPriorityReportComponent } from '../task-priority-report/task-priority-report.component';
+import { TaskReportComponent } from '../task-report/task-report.component';
+import { WorkbasketReportComponent } from '../workbasket-report/workbasket-report.component';
+import { ClassificationReportComponent } from '../classification-report/classification-report.component';
+import { TimestampReportComponent } from '../timestamp-report/timestamp-report.component';
 
 @Component({
   selector: 'kadai-monitor',
@@ -34,3 +40,46 @@ export class MonitorComponent implements OnInit {
     this.selectedTab = 'tasks-priority';
   }
 }
+
+const routes: Routes = [
+  {
+    path: '',
+    component: MonitorComponent,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'tasks-priority'
+      },
+      {
+        path: 'tasks-priority',
+        component: TaskPriorityReportComponent
+      },
+      {
+        path: 'tasks-status',
+        component: TaskReportComponent
+      },
+      {
+        path: 'workbaskets',
+        component: WorkbasketReportComponent
+      },
+      {
+        path: 'classifications',
+        component: ClassificationReportComponent
+      },
+      {
+        path: 'timestamp',
+        component: TimestampReportComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    redirectTo: 'tasks-priority',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
+];

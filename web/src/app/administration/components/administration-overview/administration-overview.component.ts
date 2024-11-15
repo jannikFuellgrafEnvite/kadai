@@ -28,6 +28,13 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatOption } from '@angular/material/core';
+import { Routes } from '@angular/router';
+import { WorkbasketOverviewComponent } from '../workbasket-overview/workbasket-overview.component';
+import { ClassificationOverviewComponent } from '../classification-overview/classification-overview.component';
+import { AccessItemsManagementComponent } from '../access-items-management/access-items-management.component';
+import { map, catchError } from 'rxjs/operators';
+import { inject } from '@angular/core';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'kadai-administration-overview',
@@ -103,3 +110,91 @@ export class AdministrationOverviewComponent implements OnInit {
     this.destroy$.complete();
   }
 }
+
+const domainGuard = () => {
+  const domainService = inject(DomainService);
+
+  return domainService.getDomains().pipe(
+    map(() => true),
+    catchError(() => {
+      return of(false);
+    })
+  );
+};
+
+const routes: Routes = [
+  {
+    path: '',
+    component: AdministrationOverviewComponent,
+    canActivate: [domainGuard],
+    children: [
+      {
+        path: 'workbaskets',
+        component: WorkbasketOverviewComponent,
+        canActivate: [domainGuard],
+        children: [
+          {
+            path: '',
+            component: WorkbasketOverviewComponent,
+            outlet: 'master'
+          },
+          {
+            path: ':id',
+            component: WorkbasketOverviewComponent,
+            outlet: 'detail'
+          },
+          {
+            path: '**',
+            redirectTo: ''
+          }
+        ]
+      },
+      {
+        path: 'classifications',
+        component: ClassificationOverviewComponent,
+        canActivate: [domainGuard],
+        children: [
+          {
+            path: '',
+            component: ClassificationOverviewComponent,
+            outlet: 'master'
+          },
+          {
+            path: ':id',
+            component: ClassificationOverviewComponent,
+            outlet: 'detail'
+          },
+          {
+            path: '**',
+            redirectTo: ''
+          }
+        ]
+      },
+      {
+        path: 'access-items-management',
+        component: AccessItemsManagementComponent,
+        canActivate: [domainGuard],
+        children: [
+          {
+            path: '**',
+            redirectTo: ''
+          }
+        ]
+      },
+      {
+        path: 'task-routing',
+        canActivate: [domainGuard],
+        loadChildren: () => import('@task-routing/task-routing.module').then((m) => m.TaskRoutingModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    redirectTo: '',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
+];

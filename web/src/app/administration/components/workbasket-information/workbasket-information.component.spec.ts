@@ -59,15 +59,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { SvgIconRegistryService, SvgLoader } from 'angular-svg-icon';
 
-@Component({ selector: 'kadai-shared-field-error-display', template: '' })
+@Component({ selector: 'kadai-shared-field-error-display', template: '', standalone: true})
 class FieldErrorDisplayStub {
   @Input() displayError: boolean;
   @Input() errorMessage: string;
   @Input() validationTrigger: boolean;
 }
 
-@Component({ selector: 'kadai-administration-icon-type', template: '' })
+@Component({ selector: 'kadai-administration-icon-type', template: '', standalone: true})
 class IconTypeStub {
   @Input() type: WorkbasketType;
   @Input() text: string;
@@ -108,6 +109,7 @@ describe('WorkbasketInformationComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        WorkbasketInformationComponent,
         FormsModule,
         MatDialogModule,
         NgxsModule.forRoot([EngineConfigurationState, WorkbasketState]),
@@ -121,14 +123,11 @@ describe('WorkbasketInformationComponent', () => {
         MatInputModule,
         MatSelectModule,
         MatAutocompleteModule,
-        MatTooltipModule
-      ],
-      declarations: [
-        WorkbasketInformationComponent,
-        FieldErrorDisplayStub,
-        IconTypeStub,
-        TypeAheadComponent,
-        MapValuesPipe,
+        MatTooltipModule,
+        FieldErrorDisplayStub, 
+        IconTypeStub, 
+        TypeAheadComponent, 
+        MapValuesPipe, 
         RemoveNoneTypePipe
       ],
       providers: [
@@ -143,7 +142,9 @@ describe('WorkbasketInformationComponent', () => {
         KadaiEngineService,
         WindowRefService,
         provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        SvgIconRegistryService,
+        { provide: SvgLoader, useValue: {} }
       ]
     }).compileComponents();
 

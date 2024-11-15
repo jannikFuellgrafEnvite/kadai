@@ -4484,7 +4484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:29.5.14":
+"@types/jest@npm:^29.5.14":
   version: 29.5.14
   resolution: "@types/jest@npm:29.5.14"
   dependencies:
@@ -9880,7 +9880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-preset-angular@npm:14.2.4":
+"jest-preset-angular@npm:^14.2.4":
   version: 14.2.4
   resolution: "jest-preset-angular@npm:14.2.4"
   dependencies:
@@ -10362,7 +10362,7 @@ __metadata:
     "@ngxs/devtools-plugin": "npm:18.1.4"
     "@ngxs/router-plugin": "npm:18.1.4"
     "@ngxs/store": "npm:18.1.4"
-    "@types/jest": "npm:29.5.14"
+    "@types/jest": "npm:^29.5.14"
     "@types/lodash": "npm:4.17.13"
     "@types/node": "npm:22.9.0"
     "@typescript-eslint/eslint-plugin": "npm:8.13.0"
@@ -10381,7 +10381,7 @@ __metadata:
     file-saver: "npm:2.0.5"
     globals: "npm:^15.12.0"
     jest: "npm:29.7.0"
-    jest-preset-angular: "npm:14.2.4"
+    jest-preset-angular: "npm:^14.2.4"
     lodash: "npm:4.17.21"
     ng2-charts: "npm:6.0.1"
     ngx-bootstrap: "npm:18.1.3"

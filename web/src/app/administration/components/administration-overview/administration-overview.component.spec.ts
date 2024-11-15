@@ -39,8 +39,14 @@ describe('AdministrationOverviewComponent', () => {
   let fixture: ComponentFixture<AdministrationOverviewComponent>;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [MatSelectModule, MatTabsModule, RouterTestingModule.withRoutes([]), NoopAnimationsModule],
-      declarations: [AdministrationOverviewComponent],
+      imports: [
+        AdministrationOverviewComponent,
+        MatSelectModule,
+        MatTabsModule,
+        RouterTestingModule.withRoutes([]),
+        NoopAnimationsModule
+      ],
+      declarations: [],
       providers: [
         { provide: DomainService, useValue: domainServiceSpy },
         KadaiEngineService,

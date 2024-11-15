@@ -19,11 +19,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-
 import { highlight } from 'app/shared/animations/validation.animation';
-
 import { RequestInProgressService } from 'app/shared/services/request-in-progress/request-in-progress.service';
-
 import { DomainService } from 'app/shared/services/domain/domain.service';
 import { NgForm, FormsModule } from '@angular/forms';
 import { FormsValidatorService } from 'app/shared/services/forms-validator/forms-validator.service';
@@ -31,12 +28,11 @@ import { ImportExportService } from 'app/administration/services/import-export.s
 import { map, take, takeUntil } from 'rxjs/operators';
 import { EngineConfigurationSelectors } from 'app/shared/store/engine-configuration-store/engine-configuration.selectors';
 import { ClassificationSelectors } from 'app/shared/store/classification-store/classification.selectors';
-import { Location, NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { Location, NgIf, NgFor, AsyncPipe, CommonModule } from '@angular/common';
 import { NotificationService } from '../../../shared/services/notifications/notification.service';
 import { ClassificationCategoryImages, CustomField, getCustomFields } from '../../../shared/models/customisation';
 import { Classification } from '../../../shared/models/classification';
 import { customFieldCount } from '../../../shared/models/classification-summary';
-
 import {
   CopyClassification,
   DeselectClassification,
@@ -89,7 +85,8 @@ import { MatOption } from '@angular/material/core';
     SvgIconComponent,
     NgFor,
     MatOption,
-    AsyncPipe
+    AsyncPipe,
+    CommonModule
   ]
 })
 export class ClassificationDetailsComponent implements OnInit, OnDestroy {

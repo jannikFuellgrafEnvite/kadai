@@ -74,7 +74,7 @@ const requestInProgressServiceSpy: Partial<RequestInProgressService> = {
   getRequestInProgress: jest.fn().mockReturnValue(of(false))
 };
 
-@Component({ selector: 'kadai-administration-workbasket-list-toolbar', template: '' })
+@Component({ selector: 'kadai-administration-workbasket-list-toolbar', template: '', standalone: true })
 class WorkbasketListToolbarStub {
   @Input() workbaskets: Array<WorkbasketSummary>;
   @Input() workbasketDefaultSortBy: string;
@@ -82,13 +82,13 @@ class WorkbasketListToolbarStub {
   @Output() performSorting = new EventEmitter<Sorting<WorkbasketQuerySortParameter>>();
 }
 
-@Component({ selector: 'kadai-administration-icon-type', template: '' })
+@Component({ selector: 'kadai-administration-icon-type', template: '', standalone: true })
 class IconTypeStub {
   @Input() type: WorkbasketType;
   @Input() selected = false;
 }
 
-@Component({ selector: 'kadai-shared-pagination', template: '' })
+@Component({ selector: 'kadai-shared-pagination', template: '', standalone: true })
 class PaginationStub {
   @Input() page: Page;
   @Input() type: String;
@@ -97,7 +97,7 @@ class PaginationStub {
   @Input() numberOfItems: number;
 }
 
-@Component({ selector: 'svg-icon', template: '' })
+@Component({ selector: 'svg-icon', template: '', standalone: true })
 class SvgIconStub {}
 
 describe('WorkbasketListComponent', () => {
@@ -110,29 +110,24 @@ describe('WorkbasketListComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        WorkbasketListComponent,
         NgxsModule.forRoot([WorkbasketState]),
         RouterTestingModule,
         MatDialogModule,
         FormsModule,
         MatProgressBarModule,
         MatSelectModule,
-        MatListModule
+        MatListModule,
+        WorkbasketListToolbarStub, 
+        IconTypeStub, 
+        PaginationStub, 
+        SvgIconStub
       ],
-      declarations: [WorkbasketListComponent, WorkbasketListToolbarStub, IconTypeStub, PaginationStub, SvgIconStub],
       providers: [
-        {
-          provide: WorkbasketService,
-          useValue: workbasketServiceMock
-        },
-        {
-          provide: OrientationService,
-          useValue: orientationServiceMock
-        },
+        { provide: WorkbasketService, useValue: workbasketServiceMock},
+        { provide: OrientationService, useValue: orientationServiceMock },
         { provide: ImportExportService, useValue: importExportServiceMock },
-        {
-          provide: DomainService,
-          useValue: domainServiceSpy
-        },
+        { provide: DomainService, useValue: domainServiceSpy },
         { provide: RequestInProgressService, useValue: requestInProgressServiceSpy }
       ]
     }).compileComponents();

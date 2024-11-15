@@ -33,8 +33,8 @@ describe('MonitorComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [MonitorComponent],
-      imports: [MatTabsModule, RouterModule, RouterTestingModule, NoopAnimationsModule],
+      declarations: [],
+      imports: [MonitorComponent, MatTabsModule, RouterModule, RouterTestingModule, NoopAnimationsModule],
       providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
     }).compileComponents();
   }));

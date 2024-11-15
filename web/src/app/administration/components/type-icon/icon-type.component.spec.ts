@@ -35,8 +35,8 @@ describe('IconTypeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [],
-      declarations: [IconTypeComponent, SvgIconStub],
+      imports: [IconTypeComponent],
+      declarations: [SvgIconStub],
       providers: []
     }).compileComponents();
 

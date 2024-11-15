@@ -27,8 +27,8 @@ xdescribe('TaskCustomFieldsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [TaskCustomFieldsComponent]
+      imports: [TaskCustomFieldsComponent, FormsModule],
+      declarations: []
     }).compileComponents();
   }));
 

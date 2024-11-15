@@ -38,30 +38,32 @@ import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RequestInProgressService } from '../../../shared/services/request-in-progress/request-in-progress.service';
+import { ClassificationDefinitionService } from 'app/administration/services/classification-definition.service';
+import { WorkbasketDefinitionService } from 'app/administration/services/workbasket-definition.service';
 
-@Component({ selector: 'kadai-administration-import-export', template: '' })
+@Component({ selector: 'kadai-administration-import-export', template: '', standalone: true })
 class ImportExportStub {
   @Input() currentSelection: KadaiType;
   @Input() parentComponent: string;
 }
 
-@Component({ selector: 'kadai-administration-classification-types-selector', template: '' })
+@Component({ selector: 'kadai-administration-classification-types-selector', template: '', standalone: true })
 class ClassificationTypesSelectorStub {}
 
-@Component({ selector: 'kadai-administration-tree', template: '' })
+@Component({ selector: 'kadai-administration-tree', template: '', standalone: true })
 class TreeStub {
   @Input() filterText;
   @Input() filterIcon;
   @Output() switchKadaiSpinnerEmit = new EventEmitter();
 }
 
-@Component({ selector: 'svg-icon', template: '' })
+@Component({ selector: 'svg-icon', template: '', standalone: true })
 class SvgIconStub {
   @Input() src;
   @Input() matTooltip;
 }
 
-@Component({ selector: 'input', template: '' })
+@Component({ selector: 'input', template: '', standalone: true })
 class InputStub {
   @Input() ngModel;
 }
@@ -84,6 +86,12 @@ const requestInProgressServiceSpy: Partial<RequestInProgressService> = {
   setRequestInProgress: jest.fn().mockReturnValue(of()),
   getRequestInProgress: jest.fn().mockReturnValue(of(false))
 };
+const classificationDefinitionServiceSpy: Partial<ClassificationDefinitionService> = {
+}
+const workbasketDefinitionServiceSpy = {
+  getDefinitions: jest.fn().mockReturnValue(of([])),
+};
+
 
 describe('ClassificationListComponent', () => {
   let fixture: ComponentFixture<ClassificationListComponent>;
@@ -101,31 +109,22 @@ describe('ClassificationListComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         NoopAnimationsModule,
-        MatProgressBarModule
-      ],
-      declarations: [
+        MatProgressBarModule,
         ClassificationListComponent,
         ClassificationTypesSelectorStub,
-        TreeStub,
-        SvgIconStub,
-        ImportExportStub,
+        TreeStub, 
+        SvgIconStub, 
+        ImportExportStub, 
         InputStub
       ],
       providers: [
-        {
-          provide: ClassificationsService,
-          useValue: classificationServiceSpy
-        },
-        {
-          provide: ClassificationCategoriesService,
-          useValue: classificationCategoriesServiceSpy
-        },
+        { provide: ClassificationsService, useValue: classificationServiceSpy },
+        { provide: ClassificationCategoriesService, useValue: classificationCategoriesServiceSpy },
         { provide: DomainService, useValue: domainServiceSpy },
-        {
-          provide: ImportExportService,
-          useValue: importExportServiceSpy
-        },
-        { provide: RequestInProgressService, useValue: requestInProgressServiceSpy }
+        { provide: ImportExportService, useValue: importExportServiceSpy },
+        { provide: RequestInProgressService, useValue: requestInProgressServiceSpy },
+        { provide: ClassificationDefinitionService, useValue: classificationDefinitionServiceSpy},
+        { provide: WorkbasketDefinitionService, useValue: workbasketDefinitionServiceSpy }
       ]
     }).compileComponents();
 

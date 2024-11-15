@@ -46,6 +46,7 @@ describe('TypeAheadComponent with AccessId input', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        TypeAheadComponent,
         NgxsModule.forRoot([EngineConfigurationState]),
         MatFormFieldModule,
         MatInputModule,
@@ -55,7 +56,7 @@ describe('TypeAheadComponent with AccessId input', () => {
         FormsModule,
         ReactiveFormsModule
       ],
-      declarations: [TypeAheadComponent],
+      declarations: [],
       providers: [
         { provide: AccessIdsService, useValue: accessIdService },
         ClassificationCategoriesService,

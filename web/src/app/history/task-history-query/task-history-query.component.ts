@@ -41,6 +41,7 @@ import {
   MatRow
 } from '@angular/material/table';
 import { GermanTimeFormatPipe } from '../../shared/pipes/german-time-format.pipe';
+import { Routes } from '@angular/router';
 
 @Component({
   selector: 'kadai-task-query',
@@ -172,3 +173,14 @@ export class TaskHistoryQueryComponent implements OnInit {
     this.pageParameter['page-size'] = cards > 0 ? cards : 1;
   }
 }
+
+const routes: Routes = [
+  {
+    path: '',
+    component: TaskHistoryQueryComponent
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
+];

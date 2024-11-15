@@ -79,13 +79,14 @@ describe('WorkbasketDistributionTargetsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        WorkbasketDistributionTargetsComponent,
         MatIconModule,
         MatDialogModule,
         MatToolbarModule,
         MatButtonModule,
         NgxsModule.forRoot([WorkbasketState])
       ],
-      declarations: [WorkbasketDistributionTargetsComponent, WorkbasketDistributionTargetsListStub],
+      declarations: [WorkbasketDistributionTargetsListStub],
       providers: [
         { provide: WorkbasketService, useValue: workbasketServiceSpy },
         { provide: NotificationService, useValue: notificationsServiceSpy },

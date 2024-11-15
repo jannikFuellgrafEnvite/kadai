@@ -27,8 +27,8 @@ xdescribe('TaskAttributeValueComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [TaskAttributeValueComponent]
+      imports: [TaskAttributeValueComponent, FormsModule],
+      declarations: []
     }).compileComponents();
   }));
 

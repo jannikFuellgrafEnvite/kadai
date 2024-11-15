@@ -51,24 +51,26 @@ import { By } from '@angular/platform-browser';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+import { SvgIconRegistryService, SvgLoader } from 'angular-svg-icon';
 
-@Component({ selector: 'kadai-shared-field-error-display', template: '' })
+@Component({ selector: 'kadai-shared-field-error-display', template: '', standalone: true })
 class FieldErrorDisplayStub {
   @Input() displayError;
   @Input() validationTrigger;
 }
 
-@Component({ selector: 'svg-icon', template: '' })
+@Component({ selector: 'svg-icon', template: '', standalone: true })
 class SvgIconStub {
   @Input() src;
 }
 
-@Component({ selector: 'input', template: '' })
+@Component({ selector: 'input', template: '', standalone: true })
 class InputStub {
   @Input() ngModel;
 }
 
-@Component({ selector: 'textarea', template: '' })
+@Component({ selector: 'textarea', template: '', standalone: true })
 class TextareaStub {
   @Input() ngModel;
 }
@@ -125,6 +127,11 @@ describe('ClassificationDetailsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
+        ClassificationDetailsComponent,
+        FieldErrorDisplayStub,
+        SvgIconStub,
+        InputStub,
+        TextareaStub,
         NgxsModule.forRoot([ClassificationState, EngineConfigurationState]),
         FormsModule,
         MatIconModule,
@@ -137,9 +144,9 @@ describe('ClassificationDetailsComponent', () => {
         MatProgressBarModule,
         MatMenuModule,
         MatTooltipModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        CommonModule
       ],
-      declarations: [ClassificationDetailsComponent, InputStub, FieldErrorDisplayStub, SvgIconStub, TextareaStub],
       providers: [
         { provide: ClassificationsService, useValue: classificationServiceSpy },
         { provide: ClassificationCategoriesService, useValue: classificationCategoriesServiceSpy },
@@ -147,7 +154,9 @@ describe('ClassificationDetailsComponent', () => {
         { provide: ImportExportService, useValue: importExportServiceSpy },
         { provide: RequestInProgressService, useValue: requestInProgressServiceSpy },
         { provide: FormsValidatorService, useValue: formsValidatorServiceSpy },
-        { provide: NotificationService, useValue: notificationServiceSpy }
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        SvgIconRegistryService,
+        { provide: SvgLoader, useValue: {} } // Mock SvgLoader Provider
       ]
     }).compileComponents();
 

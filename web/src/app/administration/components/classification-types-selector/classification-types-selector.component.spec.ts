@@ -42,8 +42,14 @@ describe('ClassificationTypesSelectorComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([ClassificationState]), MatFormFieldModule, MatSelectModule, NoopAnimationsModule],
-      declarations: [ClassificationTypesSelectorComponent],
+      imports: [
+        ClassificationTypesSelectorComponent,
+        NgxsModule.forRoot([ClassificationState]),
+        MatFormFieldModule,
+        MatSelectModule,
+        NoopAnimationsModule
+      ],
+      declarations: [],
       providers: [
         {
           provide: ClassificationsService,

@@ -38,6 +38,7 @@ import { workbasketReadStateMock } from '../../../shared/store/mock-data/mock-st
 import { MatIconModule } from '@angular/material/icon';
 import { take } from 'rxjs/operators';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { SvgIconRegistryService, SvgLoader } from 'angular-svg-icon';
 
 const showDialogFn = jest.fn().mockReturnValue(true);
 const NotificationServiceSpy: Partial<NotificationService> = {
@@ -70,17 +71,17 @@ const mockActivatedRouteNoParams = {
   url: of([{ path: 'workbaskets' }])
 };
 
-@Component({ selector: 'kadai-administration-workbasket-list', template: '' })
+@Component({ selector: 'kadai-administration-workbasket-list', template: '', standalone: true })
 class WorkbasketListStub {
   @Input() expanded: boolean;
 }
 
-@Component({ selector: 'kadai-administration-workbasket-details', template: '' })
+@Component({ selector: 'kadai-administration-workbasket-details', template: '', standalone: true })
 class WorkbasketDetailsStub {
   @Input() expanded: boolean;
 }
 
-@Component({ selector: 'svg-icon', template: '' })
+@Component({ selector: 'svg-icon', template: '', standalone: true })
 class SvgIconStub {}
 
 describe('WorkbasketOverviewComponent', () => {
@@ -92,19 +93,21 @@ describe('WorkbasketOverviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [MatIconModule, RouterTestingModule.withRoutes([]), NgxsModule.forRoot([WorkbasketState])],
-      declarations: [WorkbasketOverviewComponent, WorkbasketListStub, WorkbasketDetailsStub, SvgIconStub],
+      imports: [
+        WorkbasketOverviewComponent,
+        MatIconModule,
+        RouterTestingModule.withRoutes([]),
+        NgxsModule.forRoot([WorkbasketState]), 
+        WorkbasketListStub, 
+        WorkbasketDetailsStub, 
+        SvgIconStub
+      ],
+      declarations: [],
       providers: [
         WorkbasketService,
-        {
-          provide: NotificationService,
-          useValue: NotificationServiceSpy
-        },
+        { provide: NotificationService, useValue: NotificationServiceSpy },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        {
-          provide: DomainService,
-          useValue: domainServiceSpy
-        },
+        { provide: DomainService, useValue: domainServiceSpy },
         DomainService,
         RequestInProgressService,
         SelectedRouteService,
@@ -112,7 +115,9 @@ describe('WorkbasketOverviewComponent', () => {
         KadaiEngineService,
         WindowRefService,
         provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        SvgIconRegistryService,
+        { provide: SvgLoader, useValue: {} }
       ]
     }).compileComponents();
 

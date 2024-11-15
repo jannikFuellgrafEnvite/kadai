@@ -27,14 +27,13 @@ import { SelectedRouteService } from './shared/services/selected-route/selected-
 import { KadaiEngineService } from './shared/services/kadai-engine/kadai-engine.service';
 import { WindowRefService } from 'app/shared/services/window/window.service';
 import { environment } from 'environments/environment';
-import { MatSidenav } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { takeUntil } from 'rxjs/operators';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { SidenavListComponent } from './shared/components/sidenav-list/sidenav-list.component';
 import { UserInformationComponent } from './shared/components/user-information/user-information.component';
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
