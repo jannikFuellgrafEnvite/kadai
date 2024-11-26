@@ -18,6 +18,7 @@
 
 package io.kadai.monitor.rest;
 
+import io.kadai.classification.api.models.Classification;
 import io.kadai.common.api.exceptions.InvalidArgumentException;
 import io.kadai.common.api.exceptions.NotAuthorizedException;
 import io.kadai.common.rest.RestEndpoints;
@@ -31,13 +32,16 @@ import io.kadai.monitor.api.reports.TimestampReport;
 import io.kadai.monitor.api.reports.WorkbasketPriorityReport;
 import io.kadai.monitor.api.reports.WorkbasketReport;
 import io.kadai.monitor.api.reports.header.PriorityColumnHeader;
+import io.kadai.monitor.api.reports.row.FoldableRow;
 import io.kadai.monitor.rest.assembler.PriorityColumnHeaderRepresentationModelAssembler;
 import io.kadai.monitor.rest.assembler.ReportRepresentationModelAssembler;
 import io.kadai.monitor.rest.models.PriorityColumnHeaderRepresentationModel;
 import io.kadai.monitor.rest.models.ReportRepresentationModel;
 import io.kadai.task.api.TaskCustomField;
 import io.kadai.task.api.TaskState;
+import io.kadai.task.api.models.Task;
 import io.kadai.workbasket.api.WorkbasketType;
+import io.kadai.workbasket.api.models.Workbasket;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -201,6 +205,75 @@ public class MonitorController {
     ReportRepresentationModel report =
         reportRepresentationModelAssembler.toModel(
             builder.buildReport(), filterParameter, workbasketTypes, columnHeaders);
+
+    return ResponseEntity.status(HttpStatus.OK).body(report);
+  }
+
+  /**
+   * This endpoint generates a Detailed Workbasket Priority Report.
+   *
+   * <p>Each {@linkplain FoldableRow} represents a {@linkplain Workbasket} and can be expanded to
+   * display its {@linkplain Classification}s with a detailed view of the number of {@linkplain
+   * Task}s, grouped by their priorities.
+   *
+   * <p>Each Column Header represents a priority range.
+   *
+   * @title Compute a Workbasket Priority Report
+   * @param filterParameter the filter parameters
+   * @param workbasketTypes determine the WorkbasketTypes to include in the report
+   * @param columnHeaders the column headers for the report
+   * @return the computed Report
+   * @throws NotAuthorizedException if the current user is not authorized to compute the Report
+   * @throws InvalidArgumentException if topicWorkbaskets or useDefaultValues are false
+   */
+  @Operation(
+      summary = "Compute a Detailed Workbasket Priority Report",
+      description =
+          "This endpoint generates a Detailed Workbasket Priority Report.<p>Each "
+              + "{@linkplain FoldableRow} represents a {@linkplain Workbasket} and can be "
+              + "expanded to display its {@linkplain Classification}s with a detailed view of the "
+              + "number of {@linkplain Task}s, grouped by their priorities. "
+              + "<p>Each Column Header represents a priority range.",
+      parameters = {
+        @Parameter(
+            name = "workbasket-type",
+            description = "Determine the WorkbasketTypes to include in the report",
+            example = "GROUP"),
+        @Parameter(name = "columnHeader", description = "The column headers for the report")
+      },
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "The computed Report",
+            content =
+                @Content(
+                    mediaType = MediaTypes.HAL_JSON_VALUE,
+                    schema = @Schema(implementation = ReportRepresentationModel.class)))
+      })
+  @GetMapping(path = RestEndpoints.URL_MONITOR_DETAILED_WORKBASKET_PRIORITY_REPORT)
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  public ResponseEntity<ReportRepresentationModel> computeDetailedWorkbasketPriorityReport(
+      @ParameterObject PriorityReportFilterParameter filterParameter,
+      @RequestParam(name = "workbasket-type", required = false) WorkbasketType[] workbasketTypes,
+      @RequestParam(name = "columnHeader", required = false)
+          PriorityColumnHeaderRepresentationModel[] columnHeaders)
+      throws NotAuthorizedException, InvalidArgumentException {
+
+    WorkbasketPriorityReport.Builder builder =
+        monitorService.createWorkbasketPriorityReportBuilder().workbasketTypeIn(workbasketTypes);
+    filterParameter.apply(builder);
+
+    if (columnHeaders != null) {
+      List<PriorityColumnHeader> priorityColumnHeaders =
+          Arrays.stream(columnHeaders)
+              .map(priorityColumnHeaderRepresentationModelAssembler::toEntityModel)
+              .toList();
+      builder.withColumnHeaders(priorityColumnHeaders);
+    }
+
+    ReportRepresentationModel report =
+        reportRepresentationModelAssembler.toModel(
+            builder.buildDetailedReport(), filterParameter, workbasketTypes, columnHeaders);
 
     return ResponseEntity.status(HttpStatus.OK).body(report);
   }
