@@ -1,0 +1,473 @@
+package acceptance.task.distribute;
+
+import static io.kadai.testapi.DefaultTestEntities.defaultTask;
+import static io.kadai.testapi.DefaultTestEntities.defaultTestClassification;
+import static io.kadai.testapi.DefaultTestEntities.defaultTestObjectReference;
+import static io.kadai.testapi.DefaultTestEntities.defaultTestWorkbasket;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import acceptance.task.distribute.DistributeTaskAccTest.TaskDistributionProviderForTest;
+import io.kadai.classification.api.ClassificationService;
+import io.kadai.classification.api.models.ClassificationSummary;
+import io.kadai.common.api.BulkOperationResults;
+import io.kadai.common.api.KadaiEngine;
+import io.kadai.common.api.exceptions.InvalidArgumentException;
+import io.kadai.common.api.exceptions.KadaiException;
+import io.kadai.spi.task.api.TaskDistributionProvider;
+import io.kadai.task.api.TaskService;
+import io.kadai.task.api.exceptions.InvalidTaskStateException;
+import io.kadai.task.api.exceptions.TaskNotFoundException;
+import io.kadai.task.api.models.ObjectReference;
+import io.kadai.task.api.models.TaskSummary;
+import io.kadai.testapi.KadaiInject;
+import io.kadai.testapi.KadaiIntegrationTest;
+import io.kadai.testapi.WithServiceProvider;
+import io.kadai.testapi.security.WithAccessId;
+import io.kadai.workbasket.api.WorkbasketService;
+import io.kadai.workbasket.api.exceptions.NotAuthorizedOnWorkbasketException;
+import io.kadai.workbasket.api.exceptions.WorkbasketNotFoundException;
+import io.kadai.workbasket.api.models.WorkbasketSummary;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+@KadaiIntegrationTest
+@WithServiceProvider(
+    serviceProviderInterface = TaskDistributionProvider.class,
+    serviceProviders = TaskDistributionProviderForTest.class)
+class DistributeTaskAccTest {
+  @KadaiInject TaskService taskService;
+  @KadaiInject WorkbasketService workbasketService;
+  @KadaiInject ClassificationService classificationService;
+
+  ClassificationSummary classificationSummary;
+  ObjectReference objectReference;
+
+  WorkbasketSummary workbasketSummary1;
+  WorkbasketSummary workbasketSummary2;
+  WorkbasketSummary workbasketSummary3;
+  WorkbasketSummary workbasketSummary4;
+  WorkbasketSummary workbasketSummary5;
+  TaskSummary taskSummary1;
+  TaskSummary taskSummary2;
+  TaskSummary taskSummary3;
+  TaskSummary taskSummary4;
+  TaskSummary taskSummary5;
+  TaskSummary taskSummary6;
+  TaskSummary taskSummary7;
+
+  @WithAccessId(user = "admin")
+  @BeforeEach
+  void setup() throws Exception {
+
+    classificationSummary =
+        defaultTestClassification().buildAndStoreAsSummary(classificationService);
+
+    objectReference = defaultTestObjectReference().build();
+
+    workbasketSummary1 = defaultTestWorkbasket().buildAndStoreAsSummary(workbasketService);
+    workbasketSummary2 = defaultTestWorkbasket().buildAndStoreAsSummary(workbasketService);
+    workbasketSummary3 = defaultTestWorkbasket().buildAndStoreAsSummary(workbasketService);
+    workbasketSummary4 = defaultTestWorkbasket().buildAndStoreAsSummary(workbasketService);
+    workbasketSummary5 = defaultTestWorkbasket().buildAndStoreAsSummary(workbasketService);
+
+    List<String> workbasketTargetsFor1 =
+        List.of(workbasketSummary2.getId(), workbasketSummary3.getId(), workbasketSummary4.getId());
+    List<String> workbasketTargetsFor5 =
+        List.of(workbasketSummary2.getId(), workbasketSummary3.getId(), workbasketSummary4.getId());
+
+    workbasketService.setDistributionTargets(workbasketSummary1.getId(), workbasketTargetsFor1);
+    workbasketService.setDistributionTargets(workbasketSummary5.getId(), workbasketTargetsFor5);
+
+    taskSummary1 =
+        defaultTask(classificationSummary, workbasketSummary1, objectReference)
+            .buildAndStoreAsSummary(taskService);
+    taskSummary2 =
+        defaultTask(classificationSummary, workbasketSummary1, objectReference)
+            .buildAndStoreAsSummary(taskService);
+    taskSummary3 =
+        defaultTask(classificationSummary, workbasketSummary1, objectReference)
+            .buildAndStoreAsSummary(taskService);
+    taskSummary4 =
+        defaultTask(classificationSummary, workbasketSummary1, objectReference)
+            .buildAndStoreAsSummary(taskService);
+    taskSummary5 =
+        defaultTask(classificationSummary, workbasketSummary1, objectReference)
+            .buildAndStoreAsSummary(taskService);
+    taskSummary6 =
+        defaultTask(classificationSummary, workbasketSummary1, objectReference)
+            .buildAndStoreAsSummary(taskService);
+    taskSummary7 =
+        defaultTask(classificationSummary, workbasketSummary5, objectReference)
+            .buildAndStoreAsSummary(taskService);
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_WorkbasketIdOnly()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    taskService.distribute(workbasketSummary1.getId(), null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    assertThat(tasksInWb1).isEmpty();
+    assertThat(tasksInWb2).hasSize(2);
+    assertThat(tasksInWb3).hasSize(2);
+    assertThat(tasksInWb4).hasSize(2);
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_TaskListOnly()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    List<String> taskIds =
+        List.of(taskSummary1.getId(), taskSummary2.getId(), taskSummary3.getId());
+
+    taskService.distribute(taskIds, null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    assertThat(tasksInWb1).hasSize(3);
+    assertThat(tasksInWb2).hasSize(1);
+    assertThat(tasksInWb3).hasSize(1);
+    assertThat(tasksInWb4).hasSize(1);
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_SourceWorkbasketAndDestinationWorkbaskets()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    List<String> destinationWorkbasketIds =
+        List.of(workbasketSummary2.getId(), workbasketSummary3.getId());
+
+    taskService.distribute(workbasketSummary1.getId(), destinationWorkbasketIds, null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    assertThat(tasksInWb1).isEmpty();
+    assertThat(tasksInWb2).hasSize(3);
+    assertThat(tasksInWb3).hasSize(3);
+    assertThat(tasksInWb4).isEmpty();
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_TaskListAndDestinationWorkbaskets()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    List<String> taskIds = List.of(taskSummary1.getId(), taskSummary2.getId());
+    List<String> destinationWorkbasketIds =
+        List.of(workbasketSummary2.getId(), workbasketSummary3.getId());
+
+    taskService.distribute(taskIds, destinationWorkbasketIds, null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    assertThat(tasksInWb1).hasSize(4);
+    assertThat(tasksInWb2).hasSize(1);
+    assertThat(tasksInWb3).hasSize(1);
+    assertThat(tasksInWb4).isEmpty();
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_SourceWorkbasketAndDestinationWorkbasketsAndStrategy()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    List<String> destinationWorkbasketIds =
+        List.of(workbasketSummary2.getId(), workbasketSummary3.getId());
+
+    taskService.distribute(
+        workbasketSummary1.getId(),
+        destinationWorkbasketIds,
+        "TaskDistributionProviderForTest",
+        null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    assertThat(tasksInWb1).isEmpty();
+    assertThat(tasksInWb2).hasSize(4);
+    assertThat(tasksInWb3).hasSize(2);
+    assertThat(tasksInWb4).isEmpty();
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_TaskListAndDestinationWorkbasketsAndStrategy()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    List<String> taskIds = List.of(taskSummary1.getId(), taskSummary2.getId());
+    List<String> destinationWorkbasketIds =
+        List.of(workbasketSummary2.getId(), workbasketSummary3.getId());
+
+    taskService.distribute(
+        taskIds, destinationWorkbasketIds, "TaskDistributionProviderForTest", null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    assertThat(tasksInWb1).hasSize(4);
+    assertThat(tasksInWb2).hasSize(2);
+    assertThat(tasksInWb3).isEmpty();
+    assertThat(tasksInWb4).isEmpty();
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_TaskListAndAndStrategy()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+    List<String> taskIds = List.of(taskSummary1.getId(), taskSummary2.getId());
+
+    taskService.distribute(taskIds, "TaskDistributionProviderForTest", null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    List<Integer> actualDistribution =
+        List.of(tasksInWb2.size(), tasksInWb3.size(), tasksInWb4.size());
+    List<Integer> expectedValues = List.of(2, 0, 0);
+    assertThat(actualDistribution).containsAll(expectedValues);
+    assertThat(tasksInWb1).hasSize(4);
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DistributeTasksCorrectly_When_SourceWorkbasketAndAndStrategy()
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+
+    taskService.distribute(workbasketSummary1.getId(), "TaskDistributionProviderForTest", null);
+
+    List<TaskSummary> tasksInWb1 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary1.getId()).list();
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+    List<TaskSummary> tasksInWb4 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary4.getId()).list();
+
+    List<Integer> actualDistribution =
+        List.of(tasksInWb2.size(), tasksInWb3.size(), tasksInWb4.size());
+
+    List<Integer> expectedValues = List.of(1, 2, 3);
+
+    assertThat(actualDistribution).containsAll(expectedValues);
+    assertThat(tasksInWb1).isEmpty();
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_ThrowInvalidArgumentException_When_TasksFromDifferentSourceWorkbaskets() {
+
+    List<String> taskIds =
+        Stream.of(taskSummary7, taskSummary1, taskSummary2).map(TaskSummary::getId).toList();
+
+    assertThatThrownBy(() -> taskService.distribute(taskIds, null))
+        .isInstanceOf(InvalidArgumentException.class)
+        .hasMessageContaining("Not all tasks are in the same workbasket.");
+  }
+
+  @WithAccessId(user = "user-1-1")
+  @Test
+  void should_ThrowNotAuthorizedOnWorkbasketException_When_NotAuthorized() {
+
+    String expectedWorkbasketId = workbasketSummary1.getId();
+
+    assertThatThrownBy(() -> taskService.distribute(expectedWorkbasketId, null))
+        .isInstanceOf(NotAuthorizedOnWorkbasketException.class)
+        .hasMessageContaining(
+            String.format(
+                "Not authorized. The current user 'user-1-1' has no '[DISTRIBUTE]' permission(s) "
+                    + "for Workbasket '%s'.",
+                expectedWorkbasketId));
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_ThrowInvalidArgumentException_When_DistributionStrategyDoesNotExist() {
+
+    String nonExistingStrategy = "NoExistingStrategy";
+    String workbasketSummary1Id = workbasketSummary1.getId();
+
+    assertThatThrownBy(
+            () -> taskService.distribute(workbasketSummary1Id, nonExistingStrategy, null))
+        .isInstanceOf(InvalidArgumentException.class)
+        .hasMessageContaining(
+            "The distribution strategy '%s' does not exist.", nonExistingStrategy);
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_DoNothing_When_TaskIdsAreEmptyViaSourceWorkbasketId() throws Exception {
+
+    BulkOperationResults<String, KadaiException> result =
+        taskService.distribute(workbasketSummary2.getId(), null);
+
+    assertThat(result.getFailedIds()).isEmpty();
+
+    List<TaskSummary> tasksInWb2 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary2.getId()).list();
+    List<TaskSummary> tasksInWb3 =
+        taskService.createTaskQuery().workbasketIdIn(workbasketSummary3.getId()).list();
+
+    assertThat(tasksInWb2).isEmpty();
+    assertThat(tasksInWb3).isEmpty();
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_ThrowInvalidArgumentException_When_TaskIdsAreEmptyViaListOfTaskIds() {
+
+    List<String> emptyList = List.of();
+
+    assertThatThrownBy(() -> taskService.distribute(emptyList, null))
+        .isInstanceOf(InvalidArgumentException.class)
+        .hasMessageContaining(
+            "The source workbasket cannot be identified because the task list is empty.");
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_ThrowWorkbasketNotFoundException_When_WorkbasketDoesNotExist() {
+
+    String nonExistentWorkbasketId = "NonExistentWorkbasket";
+
+    assertThatThrownBy(() -> taskService.distribute(nonExistentWorkbasketId, null))
+        .isInstanceOf(WorkbasketNotFoundException.class)
+        .hasMessageContaining(
+            String.format("Workbasket with id '%s' was not found.", nonExistentWorkbasketId));
+  }
+
+  @WithAccessId(user = "admin")
+  @Test
+  void should_ThrowTaskNotFoundException_When_TaksDoesNotExist() {
+    String nonExistingTask = "NonExistingTaskId";
+    List<String> taskIds = List.of(nonExistingTask, taskSummary1.getId());
+    assertThatThrownBy(() -> taskService.distribute(taskIds, null))
+        .isInstanceOf(TaskNotFoundException.class)
+        .hasMessageContaining(String.format("Task with id '%s' was not found.", nonExistingTask));
+  }
+
+  public static class TaskDistributionProviderForTest implements TaskDistributionProvider {
+
+    @Override
+    public void initialize(KadaiEngine kadaiEngine) {
+      // NOOP
+    }
+
+    public Map<String, List<String>> distributeTasks(
+        List<String> taskIds,
+        List<String> destinationWorkbasketIds,
+        Map<String, Object> additionalInformation) {
+
+      if (taskIds == null || taskIds.isEmpty()) {
+        throw new IllegalArgumentException("Task IDs list cannot be null or empty.");
+      }
+      if (destinationWorkbasketIds == null || destinationWorkbasketIds.isEmpty()) {
+        throw new IllegalArgumentException("Workbasket IDs list cannot be null or empty.");
+      }
+
+      Map<String, List<String>> distributedTaskIds = new HashMap<>();
+      for (String workbasketId : destinationWorkbasketIds) {
+        distributedTaskIds.put(workbasketId, new ArrayList<>());
+      }
+
+      int taskIndex = 0;
+      if (destinationWorkbasketIds.size() > 0) {
+        String firstWorkbasketId = destinationWorkbasketIds.get(0);
+        for (int i = 0; i < 3 && taskIndex < taskIds.size(); i++, taskIndex++) {
+          distributedTaskIds.get(firstWorkbasketId).add(taskIds.get(taskIndex));
+        }
+      }
+      if (destinationWorkbasketIds.size() > 1) {
+        String secondWorkbasketId = destinationWorkbasketIds.get(1);
+        for (int i = 0; i < 2 && taskIndex < taskIds.size(); i++, taskIndex++) {
+          distributedTaskIds.get(secondWorkbasketId).add(taskIds.get(taskIndex));
+        }
+      }
+
+      int workbasketCount = destinationWorkbasketIds.size();
+      for (int i = taskIndex; i < taskIds.size(); i++) {
+        String targetWorkbasketId =
+            destinationWorkbasketIds.get(
+                (i - taskIndex + 2) % workbasketCount); // +2, da wir bei Korb 3 beginnen
+        distributedTaskIds.get(targetWorkbasketId).add(taskIds.get(i));
+      }
+
+      return distributedTaskIds;
+    }
+  }
+}
