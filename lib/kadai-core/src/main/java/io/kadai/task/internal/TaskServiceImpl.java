@@ -130,6 +130,7 @@ public class TaskServiceImpl implements TaskService {
   private final ClassificationService classificationService;
   private final TaskMapper taskMapper;
   private final TaskTransferrer taskTransferrer;
+  private final TaskDistributor taskDistributor;
   private final TaskCommentServiceImpl taskCommentService;
   private final ServiceLevelHandler serviceLevelHandler;
   private final AttachmentHandler attachmentHandler;
@@ -171,6 +172,7 @@ public class TaskServiceImpl implements TaskService {
     this.afterRequestChangesManager = kadaiEngine.getAfterRequestChangesManager();
     this.taskEndstatePreprocessorManager = kadaiEngine.getTaskEndstatePreprocessorManager();
     this.taskTransferrer = new TaskTransferrer(kadaiEngine, taskMapper, this);
+    this.taskDistributor = new TaskDistributor(kadaiEngine, this);
     this.taskCommentService =
         new TaskCommentServiceImpl(kadaiEngine, taskCommentMapper, userMapper, taskMapper, this);
     this.serviceLevelHandler =
@@ -433,8 +435,8 @@ public class TaskServiceImpl implements TaskService {
         workbasket = workbasketService.getWorkbasket(task.getWorkbasketKey(), task.getDomain());
       } else {
         RoutingTarget routingTarget = calculateWorkbasketDuringTaskCreation(task);
-        String owner = routingTarget.getOwner() == null
-            ? task.getOwner() : routingTarget.getOwner();
+        String owner =
+            routingTarget.getOwner() == null ? task.getOwner() : routingTarget.getOwner();
         workbasket = workbasketService.getWorkbasket(routingTarget.getWorkbasketId());
         task.setOwner(owner);
       }
@@ -804,6 +806,102 @@ public class TaskServiceImpl implements TaskService {
           NotAuthorizedOnWorkbasketException {
     return taskTransferrer.transferWithOwner(
         taskIds, destinationWorkbasketKey, destinationWorkbasketDomain, owner, setTransferFlag);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      String sourceWorkbasketId,
+      List<String> destinationWorkbasketId,
+      String distributionStrategyName,
+      Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          WorkbasketNotFoundException,
+          NotAuthorizedOnWorkbasketException, InvalidTaskStateException, TaskNotFoundException {
+    return taskDistributor.distribute(
+        sourceWorkbasketId,
+        destinationWorkbasketId,
+        distributionStrategyName,
+        additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      List<String> taskIds,
+      List<String> destinationWorkbasketId,
+      String distributionStrategyName,
+      Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          WorkbasketNotFoundException,
+          NotAuthorizedOnWorkbasketException,
+          TaskNotFoundException, InvalidTaskStateException {
+    return taskDistributor.distribute(
+        taskIds, destinationWorkbasketId, distributionStrategyName, additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      String sourceWorkbasketId, Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          WorkbasketNotFoundException,
+          NotAuthorizedOnWorkbasketException, TaskNotFoundException, InvalidTaskStateException {
+    return taskDistributor.distribute(sourceWorkbasketId, additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      List<String> taskIds, Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          WorkbasketNotFoundException,
+          NotAuthorizedOnWorkbasketException,
+          TaskNotFoundException, InvalidTaskStateException {
+    return taskDistributor.distribute(taskIds, additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      String sourceWorkbasketId,
+      String distributionStrategyName,
+      Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          WorkbasketNotFoundException,
+          NotAuthorizedOnWorkbasketException, InvalidTaskStateException, TaskNotFoundException {
+    return taskDistributor.distribute(
+        sourceWorkbasketId, distributionStrategyName, additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      List<String> taskIds,
+      String distributionStrategyName,
+      Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          WorkbasketNotFoundException,
+          NotAuthorizedOnWorkbasketException,
+          TaskNotFoundException, InvalidTaskStateException {
+    return taskDistributor.distribute(taskIds, distributionStrategyName, additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      String sourceWorkbasketId,
+      List<String> destinationWorkbasketId,
+      Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException, InvalidTaskStateException, TaskNotFoundException {
+    return taskDistributor.distribute(
+        sourceWorkbasketId, destinationWorkbasketId, additionalInformation);
+  }
+
+  @Override
+  public BulkOperationResults<String, KadaiException> distribute(
+      List<String> taskIds,
+      List<String> destinationWorkbasketId,
+      Map<String, Object> additionalInformation)
+      throws InvalidArgumentException,
+          NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException, InvalidTaskStateException, TaskNotFoundException {
+    return taskDistributor.distribute(taskIds, destinationWorkbasketId, additionalInformation);
   }
 
   @Override
@@ -2031,11 +2129,14 @@ public class TaskServiceImpl implements TaskService {
       }
       routingTarget = new RoutingTarget(workbasketId);
     } else {
-      routingTarget = kadaiEngine.getTaskRoutingManager()
-          .determineRoutingTarget(task).orElseThrow(
-              () -> new InvalidArgumentException(
-                  "Cannot create a Task in an empty RoutingTarget")
-          );
+      routingTarget =
+          kadaiEngine
+              .getTaskRoutingManager()
+              .determineRoutingTarget(task)
+              .orElseThrow(
+                  () ->
+                      new InvalidArgumentException(
+                          "Cannot create a Task in an empty RoutingTarget"));
     }
     return routingTarget;
   }
