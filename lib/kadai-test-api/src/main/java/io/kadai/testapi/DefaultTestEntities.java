@@ -23,11 +23,15 @@ import static io.kadai.testapi.builder.ObjectReferenceBuilder.newObjectReference
 import static io.kadai.testapi.builder.UserBuilder.newUser;
 import static io.kadai.testapi.builder.WorkbasketBuilder.newWorkbasket;
 
+import io.kadai.classification.api.models.ClassificationSummary;
+import io.kadai.task.api.models.ObjectReference;
 import io.kadai.testapi.builder.ClassificationBuilder;
 import io.kadai.testapi.builder.ObjectReferenceBuilder;
+import io.kadai.testapi.builder.TaskBuilder;
 import io.kadai.testapi.builder.UserBuilder;
 import io.kadai.testapi.builder.WorkbasketBuilder;
 import io.kadai.workbasket.api.WorkbasketType;
+import io.kadai.workbasket.api.models.WorkbasketSummary;
 import java.util.Random;
 import java.util.UUID;
 
@@ -50,6 +54,16 @@ public class DefaultTestEntities {
         .name("Megabasket")
         .type(WorkbasketType.GROUP)
         .orgLevel1("company");
+  }
+
+  public static TaskBuilder defaultTask(
+      ClassificationSummary classificationSummary,
+      WorkbasketSummary workbasketSummary,
+      ObjectReference objectReference) {
+    return TaskBuilder.newTask()
+        .classificationSummary(classificationSummary)
+        .workbasketSummary(workbasketSummary)
+        .primaryObjRef(objectReference);
   }
 
   public static ObjectReferenceBuilder defaultTestObjectReference() {

@@ -22,15 +22,24 @@ import static io.kadai.rest.test.RestHelper.TEMPLATE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import io.kadai.KadaiConfiguration;
 import io.kadai.classification.rest.models.ClassificationSummaryRepresentationModel;
+import io.kadai.common.api.BulkOperationResults;
+import io.kadai.common.api.exceptions.InvalidArgumentException;
+import io.kadai.common.api.exceptions.KadaiException;
 import io.kadai.common.internal.util.Pair;
 import io.kadai.common.rest.RestEndpoints;
 import io.kadai.rest.test.KadaiSpringBootTest;
 import io.kadai.rest.test.RestHelper;
+import io.kadai.task.api.TaskService;
 import io.kadai.task.api.TaskState;
+import io.kadai.task.rest.assembler.BulkOperationResultsRepresentationModelAssembler;
 import io.kadai.task.rest.models.AttachmentRepresentationModel;
+import io.kadai.task.rest.models.BulkOperationResultsRepresentationModel;
+import io.kadai.task.rest.models.DistributionTasksRepresentationModel;
 import io.kadai.task.rest.models.IsReadRepresentationModel;
 import io.kadai.task.rest.models.ObjectReferenceRepresentationModel;
 import io.kadai.task.rest.models.TaskRepresentationModel;
@@ -65,13 +74,18 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.function.ThrowingConsumer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.testcontainers.shaded.com.google.common.collect.Lists;
 
@@ -2106,6 +2120,282 @@ class TaskControllerIntTest {
                 .containsEntry("taskId", "TKI:000000000000000000000000000000000039");
           };
       return DynamicTest.stream(iterator, c -> "for setTransferFlag and owner: " + c, test);
+    }
+  }
+
+  @Nested
+  @TestInstance(Lifecycle.PER_CLASS)
+  class DistributeTasks {
+
+    @Mock private TaskService taskService;
+
+    @Mock
+    private BulkOperationResultsRepresentationModelAssembler
+        bulkOperationResultsRepresentationModelAssembler;
+
+    @InjectMocks private TaskController taskController;
+
+    @Test
+    void should_ThrowException_When_TaskIdsAreMissing() {
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              null, null, List.of("WBI:123456789"), null, null);
+
+      assertThatThrownBy(() -> taskController.distributeTasksFromList(requestBody))
+          .isInstanceOf(InvalidArgumentException.class)
+          .hasMessage("Task IDs must be provided.");
+    }
+
+    @Test
+    void should_CallDistributeWithAdditionalInformation_When_OnlyTaskIdsProvided()
+        throws Exception {
+      List<String> taskIds = List.of("TKI:123456789");
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              null, taskIds, null, null, Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(taskIds, Map.of("priority", "high"))).thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromList(requestBody);
+
+      verify(taskService).distribute(taskIds, Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_CallDistributeWithTaskIdsAndWithDestinationWorkbasketIds_When_Provided()
+        throws Exception {
+      List<String> taskIds = List.of("TKI:123456789");
+      List<String> destinationWorkbasketIds = List.of("WBI:123456789");
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              null, taskIds, destinationWorkbasketIds, null, Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(taskIds, destinationWorkbasketIds, Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromList(requestBody);
+
+      verify(taskService).distribute(taskIds, destinationWorkbasketIds, Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_CallDistributeWithTaskIdsAndWithStrategy_When_Provided() throws Exception {
+      List<String> taskIds = List.of("TKI:123456789");
+      String distributionStrategyName = "ROUND_ROBIN";
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              null, taskIds, null, distributionStrategyName, Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(taskIds, distributionStrategyName, Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromList(requestBody);
+
+      verify(taskService).distribute(taskIds, distributionStrategyName, Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_CallDistributeWithTaskIdsAndWithBothDestinationAndStrategy_When_Provided()
+        throws Exception {
+      List<String> taskIds = List.of("TKI:123456789");
+      List<String> destinationWorkbasketIds = List.of("WBI:123456789");
+      String distributionStrategyName = "ROUND_ROBIN";
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              null,
+              taskIds,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(
+              taskIds,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromList(requestBody);
+
+      verify(taskService)
+          .distribute(
+              taskIds,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_ThrowNotAuthorizedOnWorkbasketException() {
+      HttpHeaders headers = RestHelper.generateHeadersForUser("user-1-1");
+      headers.setContentType(MediaType.APPLICATION_JSON);
+
+      String sourceWorkbasketId = "WBI:100000000000000000000000000000000001";
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              sourceWorkbasketId, // sourceWorkbasketId
+              null,
+              null,
+              null,
+              null);
+
+      HttpEntity<DistributionTasksRepresentationModel> requestEntity =
+          new HttpEntity<>(requestBody, headers);
+
+      String url = restHelper.toUrl(RestEndpoints.URL_DISTRIBUTE_WORKBASKET);
+
+      ThrowingCallable response =
+          () ->
+              TEMPLATE.exchange(
+                  url,
+                  HttpMethod.POST,
+                  requestEntity,
+                  BulkOperationResultsRepresentationModel.class);
+
+      assertThatThrownBy(response).isInstanceOf(HttpClientErrorException.class);
+    }
+
+    @Test
+    void should_ThrowException_When_SourceWorkbasketIdIsMissing() {
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              null, null, List.of("WBI:123456789"), null, Map.of("priority", "high"));
+
+      assertThatThrownBy(() -> taskController.distributeTasksFromWorkbasket(requestBody))
+          .isInstanceOf(InvalidArgumentException.class)
+          .hasMessage("SourceWorkbasketId must be provided.");
+    }
+
+    @Test
+    void should_CallDistributeWithWIdWithAdditionalInformation_When_OnlySourceWorkbasketIdProvided()
+        throws Exception {
+      String sourceWorkbasketId = "WBI:123456789";
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              sourceWorkbasketId, null, null, null, Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(sourceWorkbasketId, Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromWorkbasket(requestBody);
+
+      verify(taskService).distribute(sourceWorkbasketId, Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_CallDistributeWithWIdAndWithDestinationWorkbasketIds_When_Provided()
+        throws Exception {
+      String sourceWorkbasketId = "WBI:123456789";
+      List<String> destinationWorkbasketIds = List.of("WBI:987654321");
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              sourceWorkbasketId, null, destinationWorkbasketIds, null, Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(
+              sourceWorkbasketId, destinationWorkbasketIds, Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromWorkbasket(requestBody);
+
+      verify(taskService)
+          .distribute(sourceWorkbasketId, destinationWorkbasketIds, Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_CallDistributeWithWIdAndWithStrategy_When_Provided() throws Exception {
+      String sourceWorkbasketId = "WBI:123456789";
+      String distributionStrategyName = "ROUND_ROBIN";
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              sourceWorkbasketId, null, null, distributionStrategyName, Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(
+              sourceWorkbasketId, distributionStrategyName, Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromWorkbasket(requestBody);
+
+      verify(taskService)
+          .distribute(sourceWorkbasketId, distributionStrategyName, Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
+    }
+
+    @Test
+    void should_CallDistributeWithWIdAndWithBothDestinationAndStrategy_When_Provided()
+        throws Exception {
+      String sourceWorkbasketId = "WBI:123456789";
+      List<String> destinationWorkbasketIds = List.of("WBI:987654321");
+      String distributionStrategyName = "ROUND_ROBIN";
+      DistributionTasksRepresentationModel requestBody =
+          new DistributionTasksRepresentationModel(
+              sourceWorkbasketId,
+              null,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              Map.of("priority", "high"));
+
+      BulkOperationResults<String, KadaiException> resultMock = new BulkOperationResults<>();
+      when(taskService.distribute(
+              sourceWorkbasketId,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              Map.of("priority", "high")))
+          .thenReturn(resultMock);
+      when(bulkOperationResultsRepresentationModelAssembler.toModel(resultMock))
+          .thenReturn(new BulkOperationResultsRepresentationModel());
+
+      ResponseEntity<BulkOperationResultsRepresentationModel> response =
+          taskController.distributeTasksFromWorkbasket(requestBody);
+
+      verify(taskService)
+          .distribute(
+              sourceWorkbasketId,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              Map.of("priority", "high"));
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      assertThat(response.getBody()).isNotNull();
     }
   }
 
