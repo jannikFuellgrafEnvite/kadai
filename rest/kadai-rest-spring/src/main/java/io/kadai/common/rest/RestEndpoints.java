@@ -81,6 +81,10 @@ public final class RestEndpoints {
       API_V1 + "tasks/{taskId}/transfer/{workbasketId}";
   public static final String URL_TRANSFER_WORKBASKET_ID = API_V1 + "tasks/transfer/{workbasketId}";
   public static final String URL_TASKS_ID_SET_READ = API_V1 + "tasks/{taskId}/set-read";
+  public static final String URL_DISTRIBUTE_WORKBASKET =
+      API_V1 + "tasks/distribute/workbasket";
+  public static final String URL_DISTRIBUTE =
+      API_V1 + "tasks/distribute";
 
   // task comment endpoints
   public static final String URL_TASK_COMMENTS = API_V1 + "tasks/{taskId}/comments";

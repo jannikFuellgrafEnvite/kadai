@@ -48,6 +48,7 @@ import io.kadai.task.rest.assembler.BulkOperationResultsRepresentationModelAssem
 import io.kadai.task.rest.assembler.TaskRepresentationModelAssembler;
 import io.kadai.task.rest.assembler.TaskSummaryRepresentationModelAssembler;
 import io.kadai.task.rest.models.BulkOperationResultsRepresentationModel;
+import io.kadai.task.rest.models.DistributionTasksRepresentationModel;
 import io.kadai.task.rest.models.IsReadRepresentationModel;
 import io.kadai.task.rest.models.TaskRepresentationModel;
 import io.kadai.task.rest.models.TaskSummaryCollectionRepresentationModel;
@@ -62,9 +63,11 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.beans.ConstructorProperties;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -1033,6 +1036,294 @@ public class TaskController {
             taskIds,
             transferTaskRepresentationModel.getOwner(),
             transferTaskRepresentationModel.getSetTransferFlag());
+
+    BulkOperationResultsRepresentationModel repModel =
+        bulkOperationResultsRepresentationModelAssembler.toModel(result);
+
+    return ResponseEntity.ok(repModel);
+  }
+
+  /**
+   * Distributes tasks from a source workbasket to one or more destination workbaskets based on the
+   * provided distribution strategy and additional information.
+   *
+   * <p>This endpoint provides flexible distribution options:
+   *
+   * <ul>
+   *   <li>If only the source workbasket ID is provided, the distribution will use default behavior.
+   *   <li>If destination workbasket IDs are provided, tasks will be distributed to those specific
+   *       workbaskets.
+   *   <li>If a distribution strategy name is provided, the specified strategy will determine how
+   *       tasks are allocated.
+   *   <li>Additional information can be passed to further customize the distribution logic.
+   * </ul>
+   *
+   * <p>Tasks that cannot be distributed (e.g., due to errors) will remain in the source workbasket.
+   *
+   * @title Distribute Tasks from a Source Workbasket
+   * @param distributionTasksRepresentationModel a JSON-formatted request body containing:
+   *     <ul>
+   *       <li>{@code sourceWorkbasketId} ({@code String}): The ID of the source workbasket
+   *           (mandatory).
+   *       <li>{@code taskIds} ({@code List<String>}): A list of task IDs to be distributed
+   *           (optional).
+   *       <li>{@code destinationWorkbasketIds} ({@code List<String>}): A list of destination
+   *           workbasket IDs (optional).
+   *       <li>{@code distributionStrategyName} ({@code String}): The name of the distribution
+   *           strategy to use (optional).
+   *       <li>{@code additionalInformation} ({@code Map<String, Object>}): Additional details to
+   *           customize the distribution logic (optional).
+   *     </ul>
+   *
+   * @return a {@link ResponseEntity} containing a {@link BulkOperationResultsRepresentationModel}
+   *     that includes:
+   *     <ul>
+   *       <li>A map of task IDs and corresponding error codes for failed distributions.
+   *     </ul>
+   *
+   * @throws WorkbasketNotFoundException if the source or destination workbaskets cannot be found.
+   * @throws NotAuthorizedOnWorkbasketException if the current user lacks permission to perform this
+   *     operation.
+   * @throws InvalidTaskStateException if one or more tasks are in a state that prevents
+   *     distribution.
+   * @throws TaskNotFoundException if specific tasks referenced in the operation cannot be found.
+   * @throws InvalidArgumentException if no {@code sourceWorkbasketId} is provided.
+   */
+  @Operation(
+      summary = "Distribute Tasks from a Source Workbasket",
+      description =
+          """
+        This endpoint distributes tasks from a source workbasket to one or more destination
+        workbaskets based on the provided distribution strategy and additional information.
+
+        - If only the source workbasket ID is provided, the distribution will use default behavior.
+        - If destination workbasket IDs are provided, tasks will be distributed to those specific
+          workbaskets.
+        - If a distribution strategy name is provided, the specified strategy will determine how
+          tasks are allocated.
+        - Additional information can be passed to further customize the distribution logic.
+
+        Tasks that cannot be distributed (e.g., due to errors) will remain in the source workbasket.
+      """,
+      requestBody =
+          @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description =
+                  "The JSON-formatted request body containing the details for task distribution.",
+              required = true,
+              content =
+                  @Content(
+                      schema = @Schema(implementation = DistributionTasksRepresentationModel.class),
+                      examples =
+                          @ExampleObject(
+                              value =
+                                  """
+                {
+                  "sourceWorkbasketId": "WBI:1234567890abcdef1234567890abcdef",
+                  "taskIds": ["TKI:abcdef1234567890abcdef1234567890"],
+                  "destinationWorkbasketIds": [
+                    "WBI:abcdef1234567890abcdef1234567890",
+                    "WBI:1234567890abcdef1234567890abcdef"
+                  ],
+                  "distributionStrategyName": "custom-distribution"
+                }
+                """))),
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description =
+                "The bulk operation result containing details of successfully distributed "
+                    + "tasks or errors.",
+            content =
+                @Content(
+                    mediaType = MediaTypes.HAL_JSON_VALUE,
+                    schema =
+                        @Schema(implementation = BulkOperationResultsRepresentationModel.class)))
+      })
+  @PostMapping(path = RestEndpoints.URL_DISTRIBUTE_WORKBASKET)
+  @Transactional(rollbackFor = Exception.class)
+  public ResponseEntity<BulkOperationResultsRepresentationModel> distributeTasksFromWorkbasket(
+      @Valid @RequestBody DistributionTasksRepresentationModel distributionTasksRepresentationModel)
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException {
+
+    String sourceWorkbasketId = distributionTasksRepresentationModel.getSourceWorkbasketId();
+    if (sourceWorkbasketId == null) {
+      throw new InvalidArgumentException("SourceWorkbasketId must be provided.");
+    }
+
+    List<String> destinationWorkbasketIds =
+        distributionTasksRepresentationModel.getDestinationWorkbasketIds();
+    String distributionStrategyName =
+        distributionTasksRepresentationModel.getDistributionStrategyName();
+    Map<String, Object> additionalInformation =
+        distributionTasksRepresentationModel.getAdditionalInformation();
+
+    BulkOperationResults<String, KadaiException> result;
+
+    if (destinationWorkbasketIds != null && distributionStrategyName != null) {
+      result =
+          taskService.distribute(
+              sourceWorkbasketId,
+              destinationWorkbasketIds,
+              distributionStrategyName,
+              additionalInformation);
+    } else if (destinationWorkbasketIds != null) {
+      result =
+          taskService.distribute(
+              sourceWorkbasketId, destinationWorkbasketIds, additionalInformation);
+    } else if (distributionStrategyName != null) {
+      result =
+          taskService.distribute(
+              sourceWorkbasketId, distributionStrategyName, additionalInformation);
+    } else {
+      result = taskService.distribute(sourceWorkbasketId, additionalInformation);
+    }
+
+    BulkOperationResultsRepresentationModel repModel =
+        bulkOperationResultsRepresentationModelAssembler.toModel(result);
+
+    return ResponseEntity.ok(repModel);
+  }
+
+  /**
+   * Distributes tasks to one or more destination workbaskets based on the provided distribution
+   * strategy and additional information. The tasks to be distributed are passed in the request
+   * body.
+   *
+   * <p>This endpoint provides flexible distribution options:
+   *
+   * <ul>
+   *   <li>If destination workbasket IDs are provided, tasks will be distributed to those specific
+   *       workbaskets.
+   *   <li>If a distribution strategy name is provided, the specified strategy will determine how
+   *       tasks are allocated.
+   *   <li>Additional information can be passed to further customize the distribution logic.
+   * </ul>
+   *
+   * <p>Tasks that cannot be distributed (e.g., due to errors) will remain in their original
+   * workbaskets.
+   *
+   * @title Distribute Tasks to Destination Workbaskets
+   * @param distributionTasksRepresentationModel a JSON-formatted request body containing:
+   *     <ul>
+   *       <li>{@code sourceWorkbasketId} ({@code String}): The ID of the source workbasket. Must be
+   *           set if {@code taskIds} is null.
+   *       <li>{@code taskIds} ({@code List<String>}): A list of task IDs to be distributed. Must be
+   *           set if {@code sourceWorkbasketId} is null. The other parameter must be null to ensure
+   *           mutual exclusivity.
+   *       <li>{@code destinationWorkbasketIds} ({@code List<String>}): A list of destination
+   *           workbasket IDs (optional).
+   *       <li>{@code distributionStrategyName} ({@code String}): The name of the distribution
+   *           strategy to use (optional).
+   *       <li>{@code additionalInformation} ({@code Map<String, Object>}): Additional details to
+   *           customize the distribution logic (optional).
+   *     </ul>
+   *     Constraint: Either {@code sourceWorkbasketId} or {@code taskIds} must be provided, but not
+   *     both. The other value must be {@code null}.
+   * @return a {@link ResponseEntity} containing a {@link BulkOperationResultsRepresentationModel}
+   *     that includes:
+   *     <ul>
+   *       <li>A map of task IDs and corresponding error codes for failed distributions.
+   *     </ul>
+   *
+   * @throws WorkbasketNotFoundException if the destination workbaskets cannot be found.
+   * @throws NotAuthorizedOnWorkbasketException if the current user lacks permission to perform this
+   *     operation.
+   * @throws InvalidTaskStateException if one or more tasks are in a state that prevents
+   *     distribution.
+   * @throws TaskNotFoundException if specific tasks referenced in the operation cannot be found.
+   * @throws InvalidArgumentException if no task IDs are provided.
+   */
+  @Operation(
+      summary = "Distribute Tasks to Destination Workbaskets",
+      description =
+          """
+        This endpoint distributes tasks to one or more destination workbaskets based on the
+        provided distribution strategy and additional information.
+
+        - If destination workbasket IDs are provided, tasks will be distributed to those specific
+          workbaskets.
+        - If a distribution strategy name is provided, the specified strategy will determine how
+          tasks are allocated.
+        - Additional information can be passed to further customize the distribution logic.
+
+        Tasks that cannot be distributed (e.g., due to errors) will remain in their original
+        workbaskets.
+
+        **Constraint:** Either `sourceWorkbasketId` or `taskIds` must be provided, but not both.
+        The other value must be `null`.
+     \s""",
+      requestBody =
+          @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description =
+                  "The JSON-formatted request body containing the details for task distribution.",
+              required = true,
+              content =
+                  @Content(
+                      schema = @Schema(implementation = DistributionTasksRepresentationModel.class),
+                      examples =
+                          @ExampleObject(
+                              value =
+                                  """
+                {
+                  "taskIds": ["TKI:abcdef1234567890abcdef1234567890"],
+                  "destinationWorkbasketIds": [
+                    "WBI:abcdef1234567890abcdef1234567890",
+                    "WBI:1234567890abcdef1234567890abcdef"
+                  ],
+                  "distributionStrategyName": "custom-distribution"
+                }
+                """))),
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description =
+                "The bulk operation result containing details of successfully "
+                    + "distributed tasks or errors.",
+            content =
+                @Content(
+                    mediaType = MediaTypes.HAL_JSON_VALUE,
+                    schema =
+                        @Schema(implementation = BulkOperationResultsRepresentationModel.class)))
+      })
+  @PostMapping(path = RestEndpoints.URL_DISTRIBUTE)
+  @Transactional(rollbackFor = Exception.class)
+  public ResponseEntity<BulkOperationResultsRepresentationModel> distributeTasksFromList(
+      @Valid @RequestBody DistributionTasksRepresentationModel distributionTasksRepresentationModel)
+      throws NotAuthorizedOnWorkbasketException,
+          WorkbasketNotFoundException,
+          InvalidTaskStateException,
+          TaskNotFoundException,
+          InvalidArgumentException {
+
+    List<String> taskIds = distributionTasksRepresentationModel.getTaskIds();
+    if (taskIds == null) {
+      throw new InvalidArgumentException("Task IDs must be provided.");
+    }
+
+    List<String> destinationWorkbasketIds =
+        distributionTasksRepresentationModel.getDestinationWorkbasketIds();
+    String distributionStrategyName =
+        distributionTasksRepresentationModel.getDistributionStrategyName();
+    Map<String, Object> additionalInformation =
+        distributionTasksRepresentationModel.getAdditionalInformation();
+
+    // Distribute tasks based on the provided parameters
+    BulkOperationResults<String, KadaiException> result;
+
+    if (destinationWorkbasketIds != null && distributionStrategyName != null) {
+      result =
+          taskService.distribute(
+              taskIds, destinationWorkbasketIds, distributionStrategyName, additionalInformation);
+    } else if (destinationWorkbasketIds != null) {
+      result = taskService.distribute(taskIds, destinationWorkbasketIds, additionalInformation);
+    } else if (distributionStrategyName != null) {
+      result = taskService.distribute(taskIds, distributionStrategyName, additionalInformation);
+    } else {
+      result = taskService.distribute(taskIds, additionalInformation);
+    }
 
     BulkOperationResultsRepresentationModel repModel =
         bulkOperationResultsRepresentationModelAssembler.toModel(result);
