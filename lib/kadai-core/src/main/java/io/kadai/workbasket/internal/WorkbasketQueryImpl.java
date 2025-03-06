@@ -28,6 +28,7 @@ import io.kadai.common.api.exceptions.KadaiRuntimeException;
 import io.kadai.common.api.exceptions.NotAuthorizedException;
 import io.kadai.common.api.exceptions.SystemException;
 import io.kadai.common.internal.InternalKadaiEngine;
+import io.kadai.common.internal.PaginationInterceptor;
 import io.kadai.workbasket.api.WorkbasketCustomField;
 import io.kadai.workbasket.api.WorkbasketPermission;
 import io.kadai.workbasket.api.WorkbasketQuery;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.ibatis.session.RowBounds;
 
 /** WorkbasketQuery for generating dynamic SQL. */
 public class WorkbasketQueryImpl implements WorkbasketQuery {
@@ -417,6 +417,7 @@ public class WorkbasketQueryImpl implements WorkbasketQuery {
   @Override
   public List<WorkbasketSummary> list() {
     handleCallerRolesAndAccessIds();
+    PaginationInterceptor.clearPagination();
     return kadaiEngine.executeInDatabaseConnection(
         () -> kadaiEngine.getSqlSession().selectList(LINK_TO_MAPPER, this));
   }
@@ -426,9 +427,21 @@ public class WorkbasketQueryImpl implements WorkbasketQuery {
     List<WorkbasketSummary> workbaskets = new ArrayList<>();
     try {
       kadaiEngine.openConnection();
-      RowBounds rowBounds = new RowBounds(offset, limit);
+
+      int safeLimit = Math.max(0, limit);
+      int safeOffset = Math.max(0, offset);
+
+      PaginationInterceptor.setPagination(safeOffset, safeLimit);
+
       handleCallerRolesAndAccessIds();
-      workbaskets = kadaiEngine.getSqlSession().selectList(LINK_TO_MAPPER, this, rowBounds);
+
+      workbaskets =
+          kadaiEngine
+              .getSqlSession()
+              .selectList(
+                  LINK_TO_MAPPER,
+                  this);
+
       return workbaskets;
     } catch (PersistenceException e) {
       if (e.getMessage().contains("ERRORCODE=-4470")) {
@@ -477,6 +490,7 @@ public class WorkbasketQueryImpl implements WorkbasketQuery {
     Long rowCount = null;
     try {
       kadaiEngine.openConnection();
+      PaginationInterceptor.clearPagination();
       handleCallerRolesAndAccessIds();
       rowCount = kadaiEngine.getSqlSession().selectOne(LINK_TO_COUNTER, this);
       return (rowCount == null) ? 0L : rowCount;

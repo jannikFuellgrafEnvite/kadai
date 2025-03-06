@@ -28,6 +28,7 @@ import io.kadai.common.api.exceptions.InvalidArgumentException;
 import io.kadai.common.api.exceptions.KadaiRuntimeException;
 import io.kadai.common.api.exceptions.SystemException;
 import io.kadai.common.internal.InternalKadaiEngine;
+import io.kadai.common.internal.PaginationInterceptor;
 import io.kadai.common.internal.configuration.DB;
 import io.kadai.task.api.CallbackState;
 import io.kadai.task.api.ObjectReferenceQuery;
@@ -49,7 +50,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -2036,9 +2036,13 @@ public class TaskQueryImpl implements TaskQuery {
       checkOpenReadAndReadTasksPermissionForSpecifiedWorkbaskets();
       setupAccessIds();
       setupJoinAndOrderParameters();
-      RowBounds rowBounds = new RowBounds(offset, limit);
+
+      int safeLimit = Math.max(0, limit);
+      int safeOffset = Math.max(0, offset);
+      PaginationInterceptor.setPagination(safeOffset, safeLimit);
+
       List<TaskSummaryImpl> tasks =
-          kadaiEngine.getSqlSession().selectList(getLinkToMapperScript(), this, rowBounds);
+          kadaiEngine.getSqlSession().selectList(getLinkToMapperScript(), this);
       result = taskService.augmentTaskSummariesByContainedSummariesWithPartitioning(tasks);
       return result;
     } catch (PersistenceException e) {
